@@ -6,3 +6,15 @@ body {
   margin: 0;
   font-family: 'PT Sans', sans-serif;
 }
+
+#root {
+  height: 100%;
+}
+
+.app-container {
+  height: 100%;
+}
+
+#pano {
+  height: 100%;
+}
