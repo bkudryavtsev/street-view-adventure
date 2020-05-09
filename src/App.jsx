@@ -17,14 +17,16 @@ const App = () => {
         addressControl: false,
         linksControl: false,
         panControl: false,
-        enableCloseButton: false
+        enableCloseButton: false,
+        fullscreenControl: false
     });
 
     let map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 45.0, lng: -25.0 },
       zoom: 1,
       draggableCursor: 'crosshair',
-      streetViewControl: false
+      streetViewControl: false,
+      fullscreenControl: false
     });
 
     mapsDispatch({ type: 'setPosition', value: pos });

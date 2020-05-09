@@ -14,7 +14,7 @@ const Map = props => {
       cursor: 'crosshair',
       icon: { 
         // url: 'https://i.ibb.co/xSdWqK5/guessmarker.png',
-        url: 'https://i.ibb.co/kxLx0ZB/guessmarker.png',
+        url: 'https://i.ibb.co/stkSW49/guessmarker.png',
         scaledSize: new google.maps.Size(32, 32),
         anchor: new google.maps.Point(16, 16)
       }
