@@ -4,12 +4,16 @@ export const MapsContext = createContext([]);
 
 const mapsReducer = (state, action) => {
   switch(action.type) {
+    case 'setLoaded':
+      return { ...state, loaded: action.value };
     case 'setPanorama':
       return { ...state, panorama: action.value };
     case 'setMap':
-      return { ...state, map: action.value }
+      return { ...state, map: action.value };
     case 'setGuess':
-      return { ...state, guess: action.value }
+      return { ...state, guess: action.value };
+    case 'setPosition':
+      return { ...state, position: action.value };
 
     default:
       return state;
