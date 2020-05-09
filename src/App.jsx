@@ -38,8 +38,9 @@ const App = () => {
   
   return ( 
     <div className="app-container">
-      <Pano/>
-      <Map/>
+      <Pano />
+      <Map />
+      <div class="guess-box"></div>
     </div> 
   );
 };

@@ -16,12 +16,23 @@ body {
 .app-container {
   height: 100%;
   width: 100%;
+  
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr) 1.5fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 #pano {
-  height: 70%;
+  grid-area: 1 / 1 / 5 / 6; 
 }
 
 #map {
-  height: 30%;
+  grid-area: 5 / 1 / 6 / 5; 
+}
+
+.guess-box { 
+  background: green;
+  grid-area: 5 / 5 / 6 / 6;
 }

@@ -8,6 +8,8 @@ const mapsReducer = (state, action) => {
       return { ...state, panorama: action.value };
     case 'setMap':
       return { ...state, map: action.value }
+    case 'setGuess':
+      return { ...state, guess: action.value }
 
     default:
       return state;
