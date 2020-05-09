@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { MapsContext } from './AppContext';
 
+import Pano from './Pano';
+import Map from './Map';
+
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
 
   window.initMaps = function() {
-    var panorama = new google.maps.StreetViewPanorama(
+    let panorama = new google.maps.StreetViewPanorama(
       document.getElementById('pano'), {
         position: {lat: 42.345573, lng: -71.098326},
         addressControl: false,
@@ -14,20 +17,29 @@ const App = () => {
         enableCloseButton: false
     });
 
+    let map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 45.0, lng: -25.0 },
+      zoom: 1,
+      streetViewControl: false
+    });
+
     mapsDispatch({
       type: 'setPanorama',
       value: panorama
     });
-  }
+    
+    mapsDispatch({
+      type: 'setMap',
+      value: map 
+    });
 
-  if(mapsContext.panorama) {
-    mapsContext.panorama.setPosition({lat: 40.729559, lng: -73.990741});
+    console.log('Maps loaded');
   }
   
   return ( 
     <div className="app-container">
-      <div id="pano"></div>
-      <div id="map"></div>
+      <Pano/>
+      <Map/>
     </div> 
   );
 };

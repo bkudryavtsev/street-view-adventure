@@ -6,6 +6,8 @@ const mapsReducer = (state, action) => {
   switch(action.type) {
     case 'setPanorama':
       return { ...state, panorama: action.value };
+    case 'setMap':
+      return { ...state, map: action.value }
 
     default:
       return state;
