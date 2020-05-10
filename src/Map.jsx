@@ -13,10 +13,9 @@ const Map = props => {
       visible: false,
       cursor: 'crosshair',
       icon: { 
-        // url: 'https://i.ibb.co/xSdWqK5/guessmarker.png',
-        url: 'https://i.ibb.co/stkSW49/guessmarker.png',
-        scaledSize: new google.maps.Size(32, 32),
-        anchor: new google.maps.Point(16, 16)
+        url: 'https://i.ibb.co/Wc9YbzS/guessmarker.png',
+        scaledSize: new google.maps.Size(28, 28),
+        anchor: new google.maps.Point(14, 14)
       }
     });
 
