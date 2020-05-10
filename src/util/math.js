@@ -7,7 +7,7 @@ export const distance = (pos1, pos2) => {
     let lon2r = radians(pos2.lng); 
     let lat1r = radians(pos1.lat); 
     let lat2r = radians(pos2.lat); 
-      
+
     // Haversine formula  
     let dlon = lon2r - lon1r;
     let dlat = lat2r - lat1r;

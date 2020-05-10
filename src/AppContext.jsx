@@ -1,6 +1,33 @@
 import React, { useReducer, createContext } from 'react';
 
+export const AppContext = createContext([]);
 export const MapsContext = createContext([]);
+
+const appReducer = (state, action) => {
+  switch(action.type) {
+    case 'pushGuessDistance':
+      state.guessDistances.push(action.value);
+      return state;
+    case 'clearGuesses':
+      state.guessDistances = [];
+      return state;
+
+    default:
+      return state;
+  }
+};
+
+export const AppContextProvider = props => {
+  const initialState = {
+    guessDistances: []
+  };
+
+  return (
+    <AppContext.Provider value={useReducer(appReducer, initialState)}>
+      {props.children}
+    </AppContext.Provider>
+  );
+};
 
 const mapsReducer = (state, action) => {
   switch(action.type) {

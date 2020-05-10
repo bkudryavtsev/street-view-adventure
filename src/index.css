@@ -19,20 +19,24 @@ body {
   
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(4, 1fr) 1.5fr;
+  grid-template-rows: repeat(3, 1fr) 1.7fr 0.3fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 
 #pano {
-  grid-area: 1 / 1 / 5 / 6; 
+  grid-area: 1 / 1 / 4 / 6;
 }
 
 #map {
-  grid-area: 5 / 1 / 6 / 5; 
+  grid-area: 4 / 1 / 5 / 6;
 }
 
 .guess-box { 
-  background: green;
-  grid-area: 5 / 5 / 6 / 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #d6ec73;
+  grid-area: 5 / 1 / 6 / 6;
+  color: #333;
 }

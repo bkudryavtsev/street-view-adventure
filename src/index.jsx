@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { MapsContextProvider } from './AppContext';
+import { MapsContextProvider, AppContextProvider } from './AppContext';
 import App from './App';
 
 ReactDOM.render(
-  <MapsContextProvider><App /></MapsContextProvider>, 
+  <AppContextProvider>
+    <MapsContextProvider>
+      <App />
+    </MapsContextProvider>
+  </AppContextProvider>,
   document.getElementById('root'));
 

@@ -22,8 +22,8 @@ const Map = props => {
 
     map.addListener('click', function(event) {
       marker.setPosition(event.latLng);
-      marker.setVisible(true);
-      mapsDispatch({ type: 'setGuess', value: event.latLng });
+      if(!marker.getVisible()) marker.setVisible(true);
+      mapsDispatch({ type: 'setGuess', value: marker.getPosition().toJSON() });
     });
 
     setInitState(true);
