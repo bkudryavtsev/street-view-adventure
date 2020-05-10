@@ -22,6 +22,29 @@
 <body>
   <div id="root"></div>
   <script src="./index.jsx"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyABgl21gMWV5SXcXfNefUrV6-CKlYRGzcE",
+      authDomain: "street-view-adventure-a7ea8.firebaseapp.com",
+      databaseURL: "https://street-view-adventure-a7ea8.firebaseio.com",
+      projectId: "street-view-adventure-a7ea8",
+      storageBucket: "street-view-adventure-a7ea8.appspot.com",
+      messagingSenderId: "830555274926",
+      appId: "1:830555274926:web:c68dc25cd1fd5406c3f73f",
+      measurementId: "G-VFW0YMC25W"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUInr7_6lymolmDGssyJGl4BuIWjV_0oQ&callback=initMaps" type="text/javascript"></script>
 </body>
 </html>

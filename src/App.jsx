@@ -3,7 +3,7 @@ import { MapsContext } from './AppContext';
 
 import Pano from './Pano';
 import Map from './Map';
-import GuessBox from './GuessBox';
+import InfoBar from './InfoBar';
 
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
@@ -41,7 +41,7 @@ const App = () => {
     <div className="app-container">
       <Pano />
       <Map />
-      <GuessBox />
+      <InfoBar />
     </div> 
   );
 };
