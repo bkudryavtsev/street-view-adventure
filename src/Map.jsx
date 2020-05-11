@@ -4,6 +4,8 @@ import { MapsContext } from './AppContext';
 const Map = props => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
   const [initState, setInitState] = useState(false);
+  const [expandedHeight, setExpandedHeight] = useState(null);
+  const pano = mapsContext.panorama;
   const map = mapsContext.map;
     
   if(!initState && map) {
@@ -28,8 +30,23 @@ const Map = props => {
     setInitState(true);
   }
 
+  const onExpandClick = event => {
+    if(!expandedHeight) {
+      setExpandedHeight('80%');
+    } else {
+      setExpandedHeight(null);
+    }
+  };
+
   return(
-    <div id="map"></div>
+    <div className="map-container" style={expandedHeight ? { height: `${expandedHeight}`} : {}}>
+      <div className="expand-btn-wrapper">
+        <div className="pill-btn" onClick={onExpandClick}>
+          {expandedHeight ? 'Minimize map' : 'Expand map'}
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
   );
 };
 
