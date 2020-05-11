@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { MapsContext } from './AppContext';
 
+const EXPANDED_HEIGHT = '80%';
+
 const Map = props => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
   const [initState, setInitState] = useState(false);
-  const [expandedHeight, setExpandedHeight] = useState(null);
+  const [isExpanded, setExpanded] = useState(false);
   const pano = mapsContext.panorama;
   const map = mapsContext.map;
     
@@ -31,18 +33,14 @@ const Map = props => {
   }
 
   const onExpandClick = event => {
-    if(!expandedHeight) {
-      setExpandedHeight('80%');
-    } else {
-      setExpandedHeight(null);
-    }
+    setExpanded(!isExpanded);
   };
 
   return(
-    <div className="map-container" style={expandedHeight ? { height: `${expandedHeight}`} : {}}>
+    <div className="map-container" style={isExpanded ? { height: `${EXPANDED_HEIGHT}`} : {}}>
       <div className="expand-btn-wrapper">
         <div className="pill-btn" onClick={onExpandClick}>
-          {expandedHeight ? 'Minimize map' : 'Expand map'}
+          {isExpanded ? 'Collapse map' : 'Expand map'}
         </div>
       </div>
       <div id="map"></div>

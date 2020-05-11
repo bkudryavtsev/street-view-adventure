@@ -23,7 +23,7 @@ const App = () => {
 
     let map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 45.0, lng: -25.0 },
-      zoom: 1,
+      zoom: 2,
       draggableCursor: 'crosshair',
       streetViewControl: false,
       fullscreenControl: false
