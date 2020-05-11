@@ -1,7 +1,9 @@
 import React, { useReducer, createContext } from 'react';
+import { colors as themeColors } from './theme';
 
-export const AppContext = createContext([]);
-export const MapsContext = createContext([]);
+export const AppContext = createContext();
+export const MapsContext = createContext();
+export const ThemeContext = createContext();
 
 const appReducer = (state, action) => {
   switch(action.type) {
@@ -56,3 +58,28 @@ export const MapsContextProvider = props => {
     </MapsContext.Provider>
   );
 };
+
+const themeReducer = (state, action) => {
+  switch(action.type) {
+    case 'setTheme':
+      const colors = action.value === 'dark' ? themeColors.dark : themeColors.light;
+      return { ...state, colors };
+
+    default:
+      return state;
+  }
+};
+
+export const ThemeContextProvider = props => {
+  const initialState = {
+    colors: themeColors.light
+  };
+
+  return (
+    <ThemeContext.Provider value={useReducer(themeReducer, initialState)}>
+      {props.children}
+    </ThemeContext.Provider>
+  );
+};
+
+
