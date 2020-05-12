@@ -22,3 +22,28 @@ export const distance = (pos1, pos2) => {
     // calculate the result 
     return(c * r);
 }
+
+// https://gis.stackexchange.com/a/131584
+export const nearby = latLng => {
+  let r = 1000 / 111300, // 1km
+    y0 = latLng.lat, 
+    x0 = latLng.lng,
+    u = Math.random(), 
+    v = Math.random(), 
+    w = r * Math.sqrt(u), 
+    t = 2 * Math.PI * v, 
+    x = w * Math.cos(t),
+    y1 = w * Math.sin(t), 
+    x1 = x / Math.cos(y0);
+
+  const newY = y0 + y1;
+  const newX = x0 + x1;
+  
+  console.log(newX, newY)
+
+  return { lat: newY, lng: newX };
+}
+
+export const randArrEl = arr => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
