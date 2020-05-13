@@ -16,10 +16,11 @@ const App = () => {
 
   window.initMaps = function() {
     getRandomLocations(NUM_LOCATIONS).then(locations => {
-      appDispatch({ type: 'setLocations', value: locations });
+      const firstLocation = locations[0].latLng;
 
       let panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
+          position: firstLocation,
           addressControl: false,
           linksControl: false,
           panControl: false,
@@ -35,7 +36,7 @@ const App = () => {
         fullscreenControl: false
       });
       
-      let marker = new google.maps.Marker({
+      let guessMarker = new google.maps.Marker({
         map: map,
         title: 'Place guess',
         visible: false,
@@ -46,10 +47,26 @@ const App = () => {
           anchor: new google.maps.Point(14, 14)
         }
       });
+      
+      let locationMarker = new google.maps.Marker({
+        position: firstLocation, 
+        map: map,
+        title: 'Actual location',
+        visible: false,
+        cursor: 'pointer',
+        icon: { 
+          url: 'https://i.ibb.co/2PR5hMD/guessmarker-actual.png',
+          scaledSize: new google.maps.Size(28, 28),
+          anchor: new google.maps.Point(14, 14)
+        }
+      });
+
+      appDispatch({ type: 'setLocations', value: locations });
 
       mapsDispatch({ type: 'setPano', value: panorama });
       mapsDispatch({ type: 'setMap', value: map });
-      mapsDispatch({ type: 'setMarker', value: marker });
+      mapsDispatch({ type: 'setGuessMarker', value: guessMarker });
+      mapsDispatch({ type: 'setLocationMarker', value: locationMarker });
 
       mapsDispatch({ type: 'setLoaded', value: true });
 

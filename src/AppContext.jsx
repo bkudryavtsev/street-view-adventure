@@ -25,7 +25,7 @@ const appReducer = (state, action) => {
     case 'setConfirmingGuess':
       return { ...state, isConfirmingGuess: action.value };
     case 'setMapExpanded':
-      return { ...state, mapExpanded: action.value }
+      return { ...state, isMapExpanded: action.value }
 
     default:
       return state;
@@ -48,12 +48,12 @@ const mapsReducer = (state, action) => {
       return { ...state, pano: action.value };
     case 'setMap':
       return { ...state, map: action.value };
-    case 'setMarker':
-      return { ...state, marker: action.value };
-    case 'setMarkerVisible':
-      return { ...state, markerVisible: action.value };
-    case 'setPosition':
-      return { ...state, position: action.value };
+    case 'setGuessMarker':
+      return { ...state, guessMarker: action.value };
+    case 'setLocationMarker':
+      return { ...state, locationMarker: action.value };
+    case 'setGuessMarkerVisible':
+      return { ...state, guessMarkerVisible: action.value };
 
     default:
       return state;

@@ -6,17 +6,17 @@ const Pano = props => {
   const [appContext, appDispatch] = useContext(AppContext);
 
   const pano = mapsContext.pano;
+  const locationMarker = mapsContext.locationMarker;
+
   const locations = appContext.locations;
   const currentRound = appContext.currentRound;
 
-  if(mapsContext.isLoaded && pano && appContext.locations.length > 0) {
-    if(locations[currentRound]) {
-      const currLocation = new google.maps.LatLng(mapsContext.position);
-      const newLocation = new google.maps.LatLng(locations[currentRound].latLng);
-      if(!currLocation.equals(newLocation)) {
-        pano.setPosition(newLocation);
-        mapsDispatch({ type: 'setPosition', value: newLocation.toJSON() });
-      }
+  if(mapsContext.isLoaded && pano && appContext.locations.length > 0 && locationMarker) {
+    const currLocation = locationMarker.getPosition();
+    const newLocation = new google.maps.LatLng(locations[currentRound].latLng);
+    if(!currLocation.equals(newLocation)) {
+      pano.setPosition(newLocation);
+      locationMarker.setPosition(newLocation);
     }
   }
 

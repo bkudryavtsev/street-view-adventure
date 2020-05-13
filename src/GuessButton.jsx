@@ -12,9 +12,11 @@ const GuessButton = props => {
   const [themeContext, themeDispatch] = useContext(ThemeContext);
   
   const themeColors = themeContext.colors;
-  const pos = mapsContext.position;
-  const marker = mapsContext.marker;
-  const markerPosition = marker && marker.getPosition();
+  const guessMarker = mapsContext.guessMarker;
+  const guessMarkerPosition = guessMarker && guessMarker.getPosition();
+  const locationMarker = mapsContext.locationMarker;
+  const locationMarkerPosition = locationMarker && locationMarker.getPosition();
+  const pos = locationMarkerPosition && locationMarkerPosition.toJSON();
   
   const modes = {
     disabled: {
@@ -48,8 +50,8 @@ const GuessButton = props => {
 
   const [currentMode, setMode] = useState(modes.disabled);
 
-  if(!guess && markerPosition) {
-    setGuess(markerPosition.toJSON());
+  if(!guess && guessMarkerPosition) {
+    setGuess(guessMarkerPosition.toJSON());
     setMode(modes.ready);
   }
 
@@ -61,17 +63,44 @@ const GuessButton = props => {
         const d = distance(pos, guess);
         const loc = appContext.locations[currentRound];
 
-        alert(`Your guess was ${d} km away from the actual location, ${loc.name} ${loc.city}, ${loc.country}`);
-
         appDispatch({ type: 'pushGuessDistance', value: d });
+        appDispatch({ type: 'setMapExpanded', value: true });
+        
+        appDispatch({ type: 'setLocationMarkerVisible', value: true });
+        locationMarker.setVisible(true);
+        
+        const lineSymbol = {
+          path: 'M 0,-1 0,1',
+          strokeOpacity: 1,
+          scale: 2 
+        };
+
+        const line = new google.maps.Polyline({
+          path: [loc.latLng, guess],
+          strokeOpacity: 0,
+          icons: [{
+            icon: lineSymbol,
+            offset: '0',
+            repeat: '10px'
+          }],
+          map: mapsContext.map
+        });
+
         setMode(modes.next);
       } else if (currentMode.id === 2) {
-        appDispatch({ type: 'setCurrentRound', value: currentRound + 1 });
+        if(appContext.isMapExpanded) appDispatch({ type: 'setMapExpanded', value: false });
+
+        const nextRound = currentRound < appContext.locations.length - 1 ? currentRound + 1 : 0;   
+        appDispatch({ type: 'setCurrentRound', value: nextRound });
+
         setMode(modes.disabled);
         
-        mapsDispatch({ type: 'setMarkerVisible', value: false });
-        marker.setVisible(false);
-        marker.setPosition(null);
+        mapsDispatch({ type: 'setGuessMarkerVisible', value: false });
+        guessMarker.setVisible(false);
+        guessMarker.setPosition(null);
+
+        appDispatch({ type: 'setLocationMarkerVisible', value: false });
+        locationMarker.setVisible(false);
 
         setGuess(null);
       } 
@@ -83,7 +112,6 @@ const GuessButton = props => {
 
   return(
     <div className="guess-button" 
-        key={'guess-button-' + currentMode.id}
         onClick={onGuess}
         onMouseEnter={event => setHover(true)}
         onMouseLeave={event => setHover(false)}
