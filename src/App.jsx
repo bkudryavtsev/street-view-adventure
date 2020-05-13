@@ -1,22 +1,25 @@
 import React, { useContext } from 'react';
-import { MapsContext } from './AppContext';
+import { MapsContext, AppContext } from './AppContext';
 
 import Pano from './Pano';
 import Map from './Map';
 import InfoBar from './InfoBar';
 
-import { getRandomLocation } from './util/db';
+import { nearby } from './util/math';
+import { getRandomLocations } from './util/db';
+
+const NUM_LOCATIONS = 2; 
 
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
+  const [appContext, appDispatch] = useContext(AppContext);
 
   window.initMaps = function() {
-    getRandomLocation().then(locData => {
-      const pos = locData.latLng;
+    getRandomLocations(NUM_LOCATIONS).then(locations => {
+      appDispatch({ type: 'setLocations', value: locations });
 
       let panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
-          position: pos,
           addressControl: false,
           linksControl: false,
           panControl: false,
@@ -31,10 +34,23 @@ const App = () => {
         streetViewControl: false,
         fullscreenControl: false
       });
+      
+      let marker = new google.maps.Marker({
+        map: map,
+        title: 'Place guess',
+        visible: false,
+        cursor: 'crosshair',
+        icon: { 
+          url: 'https://i.ibb.co/Wc9YbzS/guessmarker.png',
+          scaledSize: new google.maps.Size(28, 28),
+          anchor: new google.maps.Point(14, 14)
+        }
+      });
 
-      mapsDispatch({ type: 'setPosition', value: pos });
-      mapsDispatch({ type: 'setPanorama', value: panorama });
+      mapsDispatch({ type: 'setPano', value: panorama });
       mapsDispatch({ type: 'setMap', value: map });
+      mapsDispatch({ type: 'setMarker', value: marker });
+
       mapsDispatch({ type: 'setLoaded', value: true });
 
       console.log('Maps loaded');

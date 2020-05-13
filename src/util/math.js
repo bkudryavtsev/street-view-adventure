@@ -25,7 +25,7 @@ export const distance = (pos1, pos2) => {
 
 // https://gis.stackexchange.com/a/131584
 export const nearby = latLng => {
-  let r = 1000 / 111300, // 1km
+  let r = 100 / 111300, // 100m
     y0 = latLng.lat, 
     x0 = latLng.lng,
     u = Math.random(), 
@@ -39,11 +39,9 @@ export const nearby = latLng => {
   const newY = y0 + y1;
   const newX = x0 + x1;
   
-  console.log(newX, newY)
-
   return { lat: newY, lng: newX };
 }
 
-export const randArrEl = arr => {
-  return arr[Math.floor(Math.random() * arr.length)];
+export const randArrIdx = arr => {
+  return Math.floor(Math.random() * arr.length);
 };

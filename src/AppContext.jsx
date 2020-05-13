@@ -5,14 +5,27 @@ export const AppContext = createContext();
 export const MapsContext = createContext();
 export const ThemeContext = createContext();
 
+const initialAppState = {
+  guessDistances: [],
+  locations: [],
+  currentRound: 0
+};
+
 const appReducer = (state, action) => {
   switch(action.type) {
     case 'pushGuessDistance':
       state.guessDistances.push(action.value);
       return state;
-    case 'clearGuesses':
-      state.guessDistances = [];
-      return state;
+    case 'reset':
+      return initialAppState;
+    case 'setLocations':
+      return { ...state, locations: action.value };
+    case 'setCurrentRound':
+      return { ...state, currentRound: action.value }
+    case 'setConfirmingGuess':
+      return { ...state, isConfirmingGuess: action.value };
+    case 'setMapExpanded':
+      return { ...state, mapExpanded: action.value }
 
     default:
       return state;
@@ -20,12 +33,8 @@ const appReducer = (state, action) => {
 };
 
 export const AppContextProvider = props => {
-  const initialState = {
-    guessDistances: []
-  };
-
   return (
-    <AppContext.Provider value={useReducer(appReducer, initialState)}>
+    <AppContext.Provider value={useReducer(appReducer, initialAppState)}>
       {props.children}
     </AppContext.Provider>
   );
@@ -34,13 +43,15 @@ export const AppContextProvider = props => {
 const mapsReducer = (state, action) => {
   switch(action.type) {
     case 'setLoaded':
-      return { ...state, loaded: action.value };
-    case 'setPanorama':
-      return { ...state, panorama: action.value };
+      return { ...state, isLoaded: action.value };
+    case 'setPano':
+      return { ...state, pano: action.value };
     case 'setMap':
       return { ...state, map: action.value };
-    case 'setGuess':
-      return { ...state, guess: action.value };
+    case 'setMarker':
+      return { ...state, marker: action.value };
+    case 'setMarkerVisible':
+      return { ...state, markerVisible: action.value };
     case 'setPosition':
       return { ...state, position: action.value };
 

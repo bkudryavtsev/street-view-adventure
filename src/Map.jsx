@@ -7,26 +7,18 @@ const Map = props => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
   const [initState, setInitState] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
-  const pano = mapsContext.panorama;
+  
+  const pano = mapsContext.pano;
   const map = mapsContext.map;
+  const marker = mapsContext.marker;
     
-  if(!initState && map) {
-    let marker = new google.maps.Marker({
-      map: map,
-      title: 'Place guess',
-      visible: false,
-      cursor: 'crosshair',
-      icon: { 
-        url: 'https://i.ibb.co/Wc9YbzS/guessmarker.png',
-        scaledSize: new google.maps.Size(28, 28),
-        anchor: new google.maps.Point(14, 14)
-      }
-    });
-
+  if(!initState && mapsContext.isLoaded) {
     map.addListener('click', function(event) {
       marker.setPosition(event.latLng);
-      if(!marker.getVisible()) marker.setVisible(true);
-      mapsDispatch({ type: 'setGuess', value: marker.getPosition().toJSON() });
+      if(!marker.getVisible()) {
+        marker.setVisible(true);
+        mapsDispatch({ type: 'setMarkerVisible', value: true });
+      }
     });
 
     setInitState(true);
