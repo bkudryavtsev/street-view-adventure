@@ -16,12 +16,11 @@ const Map = props => {
   const locationMarker = mapsContext.locationMarker;
   const guessMarker = mapsContext.guessMarker;
 
-  const locations = appContext.locations;
-  const currentRound = appContext.currentRound;
+  const location = appContext.location;
 
-  if(mapsContext.isLoaded && appContext.locations.length > 0 && locationMarker) {
+  if(mapsContext.isLoaded && locationMarker) {
     const currLocation = locationMarker.getPosition();
-    const newLocation = new google.maps.LatLng(locations[currentRound].latLng);
+    const newLocation = new google.maps.LatLng(location.latLng);
     if(!currLocation.equals(newLocation)) {
       pano.setPosition(newLocation);
       locationMarker.setPosition(newLocation);

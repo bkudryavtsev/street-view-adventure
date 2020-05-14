@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { MapsContext, AppContext, ThemeContext } from './AppContext';
 
 import { distance } from './util/math'; 
+import { getNextLocation } from './util/db';
 
 const GuessButton = props => {
   const [hoverState, setHover] = useState(false);
@@ -60,6 +61,7 @@ const GuessButton = props => {
 
   const onGuess = event => {
     if(pos && guess) {
+      // guess
       if (currentMode.id === 1) {
         const d = distance(pos, guess);
 
@@ -74,23 +76,29 @@ const GuessButton = props => {
         mapsContext.clickListener.remove();
 
         setMode(modes.next);
+
+        // next location
       } else if (currentMode.id === 2) {
-        if(appContext.isMapExpanded) appDispatch({ type: 'setMapExpanded', value: false });
+        getNextLocation().then(location => {
+          appDispatch({ type: 'setLocation', value: location });
 
-        const currentRound = appContext.currentRound;
-        const nextRound = currentRound < appContext.locations.length - 1 ? currentRound + 1 : 0;   
-        appDispatch({ type: 'setCurrentRound', value: nextRound });
+          if(appContext.isMapExpanded) appDispatch({ type: 'setMapExpanded', value: false });
 
-        setMode(modes.disabled);
-        
-        guessMarker.setVisible(false);
-        guessMarker.setPosition(null);
+          const currentRound = appContext.currentRound;
+          const nextRound = currentRound < appContext.locations.length - 1 ? currentRound + 1 : 0;   
+          appDispatch({ type: 'setCurrentRound', value: nextRound });
 
-        locationMarker.setVisible(false);
+          setMode(modes.disabled);
+          
+          guessMarker.setVisible(false);
+          guessMarker.setPosition(null);
 
-        mapsContext.guessLine.setVisible(false);
+          locationMarker.setVisible(false);
 
-        setGuess(null);
+          mapsContext.guessLine.setVisible(false);
+
+          setGuess(null);
+        });
       } 
     }
   };

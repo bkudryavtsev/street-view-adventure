@@ -19,8 +19,8 @@ const appReducer = (state, action) => {
       return state;
     case 'reset':
       return initialAppState;
-    case 'setLocations':
-      return { ...state, locations: action.value };
+    case 'setLocation':
+      return { ...state, location: action.value };
     case 'setCurrentRound':
       return { ...state, currentRound: action.value }
     case 'setMapExpanded':

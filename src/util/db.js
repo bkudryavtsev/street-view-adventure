@@ -1,6 +1,6 @@
 import { randArrIdx } from "./math";
 
-export const getRandomLocations = numLocations => {
+export const getNextLocation = () => {
   const db = firebase.firestore();
   const places = db.collection('places');
   
@@ -21,51 +21,29 @@ export const getRandomLocations = numLocations => {
         if (!visitedCountries.includes(doc.id)) countryIds.push(doc.id);
       });
 
-      const locPromises = [];
+      const country = countryIds.splice(randArrIdx(countryIds), 1)[0];
+      const locations = places.doc(country).collection('locations');
 
-      for (let i = 0; i < numLocations; i++) {
-        const country = countryIds.splice(randArrIdx(countryIds), 1)[0];
-        const locations = places.doc(country).collection('locations');
+      locations.get().then(res => {
+        const notVisited = [];
+        res.forEach(doc => {
+          if (!visitedLocations.includes(doc.id)) notVisited.push(doc.id);
+        });
 
-        locPromises.push(new Promise((resolveLoc, rejectLoc) => {
-          locations.get().then(res => {
-            const allLocations = [];
-            let notVisited = [];
-            res.forEach(doc => {
-              const id = doc.id;
-              allLocations.push(id);
-              if (!visitedLocations.includes(id)) notVisited.push(id);
-            });
+        console.log(notVisited);
+        const randLoc = notVisited[randArrIdx(notVisited)];
+        visitedLocations.push(randLoc);
 
-            let randLoc = notVisited[randArrIdx(notVisited)];
+        if(notVisited.length === 1) {
+          visitedCountries.push(country);
+        }
 
-            // allow selecting a location from allLocations if there are no more locations not visited 
-            if (!randLoc) {
-              // set this country as visited
-              visitedCountries.push(country);
-              
-              // allLocations to indices from visitedLocations
-              const visitedIndices = allLocations.map(loc => 
-                visitedLocations.findIndex(visited => visited === loc));
-              const firstVisitedIdx = Math.min(...visitedIndices); 
-              randLoc = visitedLocations[firstVisitedIdx];
-            } else {
-              visitedLocations.push(randLoc);
-            }
-
-            locations.doc(randLoc).get().then(doc => {
-              resolveLoc(doc.data());
-            }).catch(err => rejectLoc(err)); 
-          }).catch(err => rejectLoc(err));
-        }));
-      }
-      
-      Promise.all(locPromises).then(locations => {
-        localStorage.setItem('visitedCountries', JSON.stringify(visitedCountries));
-        localStorage.setItem('visitedLocations', JSON.stringify(visitedLocations));
-        resolve(locations);
+        locations.doc(randLoc).get().then(doc => {
+          localStorage.setItem('visitedCountries', JSON.stringify(visitedCountries));
+          localStorage.setItem('visitedLocations', JSON.stringify(visitedLocations));
+          resolve(doc.data());
+        }).catch(err => reject(err)); 
       }).catch(err => reject(err));
-
     }).catch(err => reject(err));
   });
 };

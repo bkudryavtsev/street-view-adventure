@@ -5,8 +5,7 @@ import Pano from './Pano';
 import Map from './Map';
 import InfoBar from './InfoBar';
 
-import { nearby } from './util/math';
-import { getRandomLocations } from './util/db';
+import { getNextLocation } from './util/db';
 
 const NUM_LOCATIONS = 2; 
 
@@ -15,12 +14,10 @@ const App = () => {
   const [appContext, appDispatch] = useContext(AppContext);
 
   window.initMaps = function() {
-    getRandomLocations(NUM_LOCATIONS).then(locations => {
-      const firstLocation = locations[0].latLng;
-
+    getNextLocation().then(location => {
       const panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
-          position: firstLocation,
+          position: location.latLng,
           addressControl: false,
           linksControl: false,
           panControl: false,
@@ -49,7 +46,7 @@ const App = () => {
       });
       
       const locationMarker = new google.maps.Marker({
-        position: firstLocation, 
+        position: location.latLng, 
         map: map,
         title: 'Actual location',
         visible: false,
@@ -78,7 +75,7 @@ const App = () => {
         map: map
       });
 
-      appDispatch({ type: 'setLocations', value: locations });
+      appDispatch({ type: 'setLocation', value: location });
 
       mapsDispatch({ type: 'setPano', value: panorama });
       mapsDispatch({ type: 'setMap', value: map });
