@@ -18,7 +18,7 @@ const App = () => {
     getRandomLocations(NUM_LOCATIONS).then(locations => {
       const firstLocation = locations[0].latLng;
 
-      let panorama = new google.maps.StreetViewPanorama(
+      const panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
           position: firstLocation,
           addressControl: false,
@@ -28,7 +28,7 @@ const App = () => {
           fullscreenControl: false
       });
 
-      let map = new google.maps.Map(document.getElementById('map'), {
+      const map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 45.0, lng: -25.0 },
         zoom: 2,
         draggableCursor: 'crosshair',
@@ -36,29 +36,46 @@ const App = () => {
         fullscreenControl: false
       });
       
-      let guessMarker = new google.maps.Marker({
+      const guessMarker = new google.maps.Marker({
         map: map,
         title: 'Place guess',
         visible: false,
         cursor: 'crosshair',
         icon: { 
-          url: 'https://i.ibb.co/Wc9YbzS/guessmarker.png',
-          scaledSize: new google.maps.Size(28, 28),
-          anchor: new google.maps.Point(14, 14)
+          url: 'https://i.ibb.co/tXsBvbW/Guess-Marker.png',
+          scaledSize: new google.maps.Size(32, 32),
+          anchor: new google.maps.Point(16, 16)
         }
       });
       
-      let locationMarker = new google.maps.Marker({
+      const locationMarker = new google.maps.Marker({
         position: firstLocation, 
         map: map,
         title: 'Actual location',
         visible: false,
-        cursor: 'pointer',
+        cursor: 'default',
         icon: { 
-          url: 'https://i.ibb.co/2PR5hMD/guessmarker-actual.png',
-          scaledSize: new google.maps.Size(28, 28),
-          anchor: new google.maps.Point(14, 14)
+          url: 'https://i.ibb.co/HVbnWtx/Location-Marker.png',
+          scaledSize: new google.maps.Size(32, 32),
+          anchor: new google.maps.Point(16, 16)
         }
+      });
+
+      const lineSymbol = {
+        path: 'M 0,-1 0,1',
+        strokeOpacity: 1,
+        scale: 2 
+      };
+
+      const line = new google.maps.Polyline({
+        strokeOpacity: 0,
+        icons: [{
+          icon: lineSymbol,
+          offset: '0',
+          repeat: '10px'
+        }],
+        visible: false,
+        map: map
       });
 
       appDispatch({ type: 'setLocations', value: locations });
@@ -67,6 +84,7 @@ const App = () => {
       mapsDispatch({ type: 'setMap', value: map });
       mapsDispatch({ type: 'setGuessMarker', value: guessMarker });
       mapsDispatch({ type: 'setLocationMarker', value: locationMarker });
+      mapsDispatch({ type: 'setGuessLine', value: line });
 
       mapsDispatch({ type: 'setLoaded', value: true });
 

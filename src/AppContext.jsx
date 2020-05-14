@@ -8,7 +8,8 @@ export const ThemeContext = createContext();
 const initialAppState = {
   guessDistances: [],
   locations: [],
-  currentRound: 0
+  currentRound: 0,
+  isMapExpanded: false
 };
 
 const appReducer = (state, action) => {
@@ -22,8 +23,6 @@ const appReducer = (state, action) => {
       return { ...state, locations: action.value };
     case 'setCurrentRound':
       return { ...state, currentRound: action.value }
-    case 'setConfirmingGuess':
-      return { ...state, isConfirmingGuess: action.value };
     case 'setMapExpanded':
       return { ...state, isMapExpanded: action.value }
 
@@ -48,12 +47,14 @@ const mapsReducer = (state, action) => {
       return { ...state, pano: action.value };
     case 'setMap':
       return { ...state, map: action.value };
+    case 'setClickListener':
+      return { ...state, clickListener: action.value };
     case 'setGuessMarker':
       return { ...state, guessMarker: action.value };
     case 'setLocationMarker':
       return { ...state, locationMarker: action.value };
-    case 'setGuessMarkerVisible':
-      return { ...state, guessMarkerVisible: action.value };
+    case 'setGuessLine':
+      return { ...state, guessLine: action.value }
 
     default:
       return state;

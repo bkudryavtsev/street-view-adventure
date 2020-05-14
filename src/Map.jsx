@@ -6,24 +6,39 @@ const EXPANDED_HEIGHT = '80%';
 const Map = props => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
   const [appContext, appDispatch] = useContext(AppContext);
-  const [initState, setInitState] = useState(false);
+  const [isClickListenerSet, setClickListenerState] = useState(false);
   
   const pano = mapsContext.pano;
   const map = mapsContext.map;
-  const guessMarker = mapsContext.guessMarker;
 
   const isExpanded = appContext.isMapExpanded;
+
+  const locationMarker = mapsContext.locationMarker;
+  const guessMarker = mapsContext.guessMarker;
+
+  const locations = appContext.locations;
+  const currentRound = appContext.currentRound;
+
+  if(mapsContext.isLoaded && appContext.locations.length > 0 && locationMarker) {
+    const currLocation = locationMarker.getPosition();
+    const newLocation = new google.maps.LatLng(locations[currentRound].latLng);
+    if(!currLocation.equals(newLocation)) {
+      pano.setPosition(newLocation);
+      locationMarker.setPosition(newLocation);
+      setClickListenerState(false);
+    }
+  }
     
-  if(!initState && mapsContext.isLoaded) {
-    map.addListener('click', function(event) {
+  if(!isClickListenerSet && mapsContext.isLoaded) {
+    const listener = map.addListener('click', function(event) {
       guessMarker.setPosition(event.latLng);
       if(!guessMarker.getVisible()) {
         guessMarker.setVisible(true);
-        mapsDispatch({ type: 'setGuessMarkerVisible', value: true });
+        mapsDispatch({ type: 'setClickListener', value: listener });
       }
     });
 
-    setInitState(true);
+    setClickListenerState(true);
   }
 
   const onExpandClick = event => {
