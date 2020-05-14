@@ -6,6 +6,7 @@ import { getNextLocation, getCountryDetails } from './util/db';
 
 const GuessButton = props => {
   const [hoverState, setHover] = useState(false);
+  const [isMouseDown, setMouseDown] = useState(false);
   const [guess, setGuess] = useState(null);
 
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
@@ -114,11 +115,16 @@ const GuessButton = props => {
     <div className="guess-button" 
         onClick={onGuess}
         onMouseEnter={event => setHover(true)}
-        onMouseLeave={event => setHover(false)}
+        onMouseLeave={event => {
+          setHover(false);
+          setMouseDown(false);
+        }}
+        onMouseDown={event => setMouseDown(true)}
+        onMouseUp={event => setMouseDown(false)}
         style={{
           background: background, 
           cursor: currentMode.cursor, 
-          borderBottom: `3px solid ${borderBottom}` 
+          borderBottom: currentMode.id !== 0 && isMouseDown ? 'none' : `3px solid ${borderBottom}` 
         }}>
       <h3>{currentMode.text}</h3>
     </div>
