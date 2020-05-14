@@ -30,7 +30,6 @@ export const getNextLocation = () => {
           if (!visitedLocations.includes(doc.id)) notVisited.push(doc.id);
         });
 
-        console.log(notVisited);
         const randLoc = notVisited[randArrIdx(notVisited)];
         visitedLocations.push(randLoc);
 
@@ -44,6 +43,17 @@ export const getNextLocation = () => {
           resolve(doc.data());
         }).catch(err => reject(err)); 
       }).catch(err => reject(err));
+    }).catch(err => reject(err));
+  });
+};
+
+export const getCountryDetails = country => {
+  const db = firebase.firestore();
+  const countries = db.collection('countries');
+
+  return new Promise((resolve, reject) => {
+    countries.where('code', '==', country).get().then(res => {
+      resolve(res.docs[0].data());
     }).catch(err => reject(err));
   });
 };

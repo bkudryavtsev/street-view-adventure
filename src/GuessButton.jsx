@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { MapsContext, AppContext, ThemeContext } from './AppContext';
 
 import { distance } from './util/math'; 
-import { getNextLocation } from './util/db';
+import { getNextLocation, getCountryDetails } from './util/db';
 
 const GuessButton = props => {
   const [hoverState, setHover] = useState(false);
@@ -76,6 +76,10 @@ const GuessButton = props => {
         mapsContext.clickListener.remove();
 
         setMode(modes.next);
+
+        getCountryDetails(appContext.location.country).then(res => {
+          console.log(res);
+        });
 
         // next location
       } else if (currentMode.id === 2) {
