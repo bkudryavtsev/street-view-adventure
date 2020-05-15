@@ -1,6 +1,7 @@
-import { randArrIdx, weightedRandom } from "./math";
+import { randArrIdx, weightedRandom, nearby } from "./math";
 
 const LOCATION_RADIUS = 500; // meters
+const SEARCH_RADIUS = 500; // meters
 
 export const getNextLocation = () => {
   const db = firebase.firestore();
@@ -42,9 +43,10 @@ export const getNextLocation = () => {
         locations.doc(randLoc).get().then(doc => {
           const sv = new google.maps.StreetViewService();
           const location = doc.data();
+          location.latLng = nearby(location.latLng, LOCATION_RADIUS);
           sv.getPanorama({
             location: location.latLng, 
-            radius: LOCATION_RADIUS
+            radius: SEARCH_RADIUS
           }, (data, status) => {
             if (status === 'OK') {
               location.latLng = data.location.latLng.toJSON();

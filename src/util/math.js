@@ -33,8 +33,8 @@ export const weightedRandom = dist => {
 }
 
 // https://gis.stackexchange.com/a/131584
-export const nearby = latLng => {
-  let r = 100 / 111300, // 100m
+export const nearby = (latLng, radius) => {
+  let r = radius / 111300,
     y0 = latLng.lat, 
     x0 = latLng.lng,
     u = Math.random(), 

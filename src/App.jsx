@@ -22,7 +22,8 @@ const App = () => {
           linksControl: false,
           panControl: false,
           enableCloseButton: false,
-          fullscreenControl: false
+          fullscreenControl: false,
+          showRoadLabels: false
       });
 
       const map = new google.maps.Map(document.getElementById('map'), {
