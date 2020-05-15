@@ -4,9 +4,12 @@ import { MapsContext, AppContext, ThemeContext } from './AppContext';
 import { distance } from './util/math'; 
 import { getNextLocation, getCountryDetails } from './util/db';
 
+import './spinner.css';
+
 const GuessButton = props => {
   const [hoverState, setHover] = useState(false);
   const [isMouseDown, setMouseDown] = useState(false);
+  const [isWaiting, setWaiting] = useState(false);
   const [guess, setGuess] = useState(null);
 
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
@@ -84,6 +87,9 @@ const GuessButton = props => {
 
         // next location
       } else if (currentMode.id === 2) {
+        setWaiting(true);
+        setMode(modes.disabled);
+        
         getNextLocation().then(location => {
           appDispatch({ type: 'setLocation', value: location });
 
@@ -92,8 +98,6 @@ const GuessButton = props => {
           const currentRound = appContext.currentRound;
           const nextRound = currentRound < appContext.locations.length - 1 ? currentRound + 1 : 0;   
           appDispatch({ type: 'setCurrentRound', value: nextRound });
-
-          setMode(modes.disabled);
           
           guessMarker.setVisible(false);
           guessMarker.setPosition(null);
@@ -103,6 +107,7 @@ const GuessButton = props => {
           mapsContext.guessLine.setVisible(false);
 
           setGuess(null);
+          setWaiting(false);
         });
       } 
     }
@@ -126,7 +131,14 @@ const GuessButton = props => {
           cursor: currentMode.cursor, 
           borderBottom: currentMode.id !== 0 && isMouseDown ? 'none' : `3px solid ${borderBottom}` 
         }}>
-      <h3>{currentMode.text}</h3>
+      {isWaiting ? 
+        <div className="spinner">
+          <div className="bounce1"></div>
+          <div className="bounce2"></div>
+          <div className="bounce3"></div>
+        </div> : 
+        <h3>{currentMode.text}</h3>
+      }
     </div>
   );
 };

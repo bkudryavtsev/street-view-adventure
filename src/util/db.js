@@ -1,7 +1,6 @@
 import { randArrIdx, weightedRandom } from "./math";
 
 const LOCATION_RADIUS = 500; // meters
-const LIMITED_LOCATION_CHANCE = 0.6; // chance that location will be limited to 'outdoor' 
 
 export const getNextLocation = () => {
   const db = firebase.firestore();
@@ -9,13 +8,6 @@ export const getNextLocation = () => {
   
   let visitedCountries = JSON.parse(localStorage.getItem('visitedCountries')) || [];
   let visitedLocations = JSON.parse(localStorage.getItem('visitedLocations')) || [];
-
-  const locationSource = weightedRandom({
-    'outdoor': LIMITED_LOCATION_CHANCE,
-    'default': 1 - LIMITED_LOCATION_CHANCE 
-  });
-
-  console.log('Location source: ', locationSource);
 
   return new Promise((resolve, reject) => {
     places.get().then(res => {
@@ -52,8 +44,7 @@ export const getNextLocation = () => {
           const location = doc.data();
           sv.getPanorama({
             location: location.latLng, 
-            radius: LOCATION_RADIUS,
-            source: locationSource
+            radius: LOCATION_RADIUS
           }, (data, status) => {
             if (status === 'OK') {
               location.latLng = data.location.latLng.toJSON();
