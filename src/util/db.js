@@ -1,4 +1,7 @@
-import { randArrIdx } from "./math";
+import { randArrIdx, weightedRandom } from "./math";
+
+const LOCATION_RADIUS = 500; // meters
+const LIMITED_LOCATION_CHANCE = 0.6; // chance that location will be limited to 'outdoor' 
 
 export const getNextLocation = () => {
   const db = firebase.firestore();
@@ -6,6 +9,13 @@ export const getNextLocation = () => {
   
   let visitedCountries = JSON.parse(localStorage.getItem('visitedCountries')) || [];
   let visitedLocations = JSON.parse(localStorage.getItem('visitedLocations')) || [];
+
+  const locationSource = weightedRandom({
+    'outdoor': LIMITED_LOCATION_CHANCE,
+    'default': 1 - LIMITED_LOCATION_CHANCE 
+  });
+
+  console.log('Location source: ', locationSource);
 
   return new Promise((resolve, reject) => {
     places.get().then(res => {
@@ -38,9 +48,24 @@ export const getNextLocation = () => {
         }
 
         locations.doc(randLoc).get().then(doc => {
-          localStorage.setItem('visitedCountries', JSON.stringify(visitedCountries));
-          localStorage.setItem('visitedLocations', JSON.stringify(visitedLocations));
-          resolve(doc.data());
+          const sv = new google.maps.StreetViewService();
+          const location = doc.data();
+          sv.getPanorama({
+            location: location.latLng, 
+            radius: LOCATION_RADIUS,
+            source: locationSource
+          }, (data, status) => {
+            if (status === 'OK') {
+              location.latLng = data.location.latLng.toJSON();
+
+              localStorage.setItem('visitedCountries', JSON.stringify(visitedCountries));
+              localStorage.setItem('visitedLocations', JSON.stringify(visitedLocations));
+              
+              resolve(location);
+            } else {
+              reject('Could not get panorama');
+            }
+          });
         }).catch(err => reject(err)); 
       }).catch(err => reject(err));
     }).catch(err => reject(err));

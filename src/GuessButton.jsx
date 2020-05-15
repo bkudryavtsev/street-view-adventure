@@ -79,7 +79,7 @@ const GuessButton = props => {
         setMode(modes.next);
 
         getCountryDetails(appContext.location.country).then(res => {
-          console.log(res);
+          // console.log(res);
         });
 
         // next location

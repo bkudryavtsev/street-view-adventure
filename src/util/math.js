@@ -23,6 +23,15 @@ export const distance = (pos1, pos2) => {
     return(c * r);
 }
 
+export const weightedRandom = dist => {
+  let sum = 0;
+  let r = Math.random();
+  for (let i in dist) {
+    sum += dist[i];
+    if (r <= sum) return i;
+  }
+}
+
 // https://gis.stackexchange.com/a/131584
 export const nearby = latLng => {
   let r = 100 / 111300, // 100m
