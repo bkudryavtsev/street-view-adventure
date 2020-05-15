@@ -46,6 +46,7 @@ body {
 }
 
 .map-container {
+  position: relative;
   height: var(--default-map-height);
   pointer-events: auto;
   transition: 300ms;
@@ -101,6 +102,47 @@ body {
 
 .pill-btn:hover {
   background: #ecd873;   
+}
+
+.location-card-wrapper {
+  position: absolute;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  margin: 40px;
+  width: 300px;
+  height: 480px;
+  pointer-events: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.card .card-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #eee;
+  box-shadow: 0 0 3px #999;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.card-image img {
+  height: 120px;
 }
 
 .guess-button {

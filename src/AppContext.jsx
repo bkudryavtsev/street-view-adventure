@@ -9,7 +9,9 @@ const initialAppState = {
   guessDistances: [],
   locations: [],
   currentRound: 0,
-  isMapExpanded: false
+  isMapExpanded: false,
+  appView: 'guess',
+  update: 0
 };
 
 const appReducer = (state, action) => {
@@ -22,9 +24,15 @@ const appReducer = (state, action) => {
     case 'setLocation':
       return { ...state, location: action.value };
     case 'setCurrentRound':
-      return { ...state, currentRound: action.value }
+      return { ...state, currentRound: action.value };
     case 'setMapExpanded':
-      return { ...state, isMapExpanded: action.value }
+      return { ...state, isMapExpanded: action.value };
+    case 'setCountryDetails':
+      return { ...state, countryDetails: action.value };
+    case 'setView':
+      return { ...state, appView: action.value };
+    case 'update':
+      return { ...state, update: state.update + 1 };
 
     default:
       return state;

@@ -16,13 +16,12 @@ const GuessButton = props => {
   const [appContext, appDispatch] = useContext(AppContext);
   const [themeContext, themeDispatch] = useContext(ThemeContext);
   
-  const themeColors = themeContext.colors;
-  const guessMarker = mapsContext.guessMarker;
-  const guessMarkerPosition = guessMarker && guessMarker.getPosition();
-  const locationMarker = mapsContext.locationMarker;
-  const locationMarkerPosition = locationMarker && locationMarker.getPosition();
-  const pos = locationMarkerPosition && locationMarkerPosition.toJSON();
+  const { guessMarker, locationMarker } = mapsContext;
 
+  const themeColors = themeContext.colors;
+  const guessMarkerPosition = guessMarker && guessMarker.getPosition();
+  const locationMarkerPosition = locationMarker && locationMarker.getPosition();
+  const locationMarkerPositionJSON = locationMarkerPosition && locationMarkerPosition.toJSON();
   const guessMarkerPositionJSON = guessMarkerPosition && guessMarkerPosition.toJSON();
   
   const modes = {
@@ -64,31 +63,26 @@ const GuessButton = props => {
   }
 
   const onGuess = event => {
-    if(pos && guess) {
+    if(locationMarkerPositionJSON && guess) {
       // guess
       if (currentMode.id === 1) {
-        const d = distance(pos, guess);
+        const d = distance(locationMarkerPositionJSON, guess);
 
         appDispatch({ type: 'pushGuessDistance', value: d });
         appDispatch({ type: 'setMapExpanded', value: true });
-        
-        locationMarker.setVisible(true);
-        
-        mapsContext.guessLine.setPath([pos, guess]);
-        mapsContext.guessLine.setVisible(true);
-
-        mapsContext.clickListener.remove();
 
         setMode(modes.next);
+        appDispatch({ type: 'setView', value: 'guessResult' });
 
         getCountryDetails(appContext.location.country).then(res => {
-          // console.log(res);
+          appDispatch({ type: 'setCountryDetails', value: res });
         });
 
         // next location
       } else if (currentMode.id === 2) {
         setWaiting(true);
         setMode(modes.disabled);
+        appDispatch({ type: 'setView', value: 'loadingMap' });
         
         getNextLocation().then(location => {
           appDispatch({ type: 'setLocation', value: location });
@@ -96,18 +90,11 @@ const GuessButton = props => {
           if(appContext.isMapExpanded) appDispatch({ type: 'setMapExpanded', value: false });
 
           const currentRound = appContext.currentRound;
-          const nextRound = currentRound < appContext.locations.length - 1 ? currentRound + 1 : 0;   
-          appDispatch({ type: 'setCurrentRound', value: nextRound });
-          
-          guessMarker.setVisible(false);
-          guessMarker.setPosition(null);
-
-          locationMarker.setVisible(false);
-
-          mapsContext.guessLine.setVisible(false);
+          appDispatch({ type: 'setCurrentRound', value: currentRound + 1 });
 
           setGuess(null);
           setWaiting(false);
+          appDispatch({ type: 'setView', value: 'guess' });
         });
       } 
     }
