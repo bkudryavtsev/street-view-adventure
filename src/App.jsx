@@ -91,8 +91,10 @@ const App = () => {
   
   return ( 
     <div className="app-container">
-      <Pano />
-      <Map />
+      <div className="g-container">
+        <Pano />
+        <Map />
+      </div>
       <InfoBar />
     </div> 
   );

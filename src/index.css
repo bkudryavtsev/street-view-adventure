@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans');
 
+:root {
+  --default-map-height: 180px;
+}
+
 html,
 body {
   height: 100%;
@@ -20,12 +24,30 @@ body {
   flex-direction: column;
 }
 
+.g-container {
+  position: relative;
+  flex: 10;
+}
+
 #pano {
-  flex: 8;
+  height: calc(100% - var(--default-map-height));
+}
+
+.map-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  top: 0;
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .map-container {
-  height: 180px;
+  height: var(--default-map-height);
+  pointer-events: auto;
   transition: 300ms;
 }
 
@@ -56,7 +78,7 @@ body {
 
 .expand-btn-wrapper {
   position: absolute;
-  z-index: 5;
+  z-index: 6;
   width: 100%;
   margin-top: -16px;
   display: flex;
