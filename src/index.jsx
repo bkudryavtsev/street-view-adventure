@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 
 import { MapsContextProvider, 
   AppContextProvider, ThemeContextProvider } from './AppContext';
-import App from './App';
+import Routes from './Routes';
 
 ReactDOM.render(
   <AppContextProvider>
     <MapsContextProvider>
       <ThemeContextProvider>
-        <App />
+        <Routes />
       </ThemeContextProvider>
     </MapsContextProvider>
   </AppContextProvider>,

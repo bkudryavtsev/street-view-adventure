@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MapsContext, AppContext } from './AppContext';
 
 import Pano from './Pano';
@@ -7,7 +7,7 @@ import InfoBar from './InfoBar';
 
 import { getNextLocation } from './util/db';
 
-const NUM_LOCATIONS = 2; 
+import './spinner.css';
 
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
@@ -90,8 +90,27 @@ const App = () => {
     });
   }
   
+  useEffect(() => {
+    const mapsApiScript = document.createElement('script');
+    mapsApiScript.type = 'text/javascript';
+    mapsApiScript.defer = true;
+    mapsApiScript.async = true; 
+    mapsApiScript.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCUInr7_6lymolmDGssyJGl4BuIWjV_0oQ&callback=initMaps'; 
+
+    document.body.appendChild(mapsApiScript);
+  }, []);
+  
   return ( 
     <div className="app-container">
+      {!mapsContext.isLoaded && 
+        <div className="overlay">
+          <div className="spinner">
+            <div className="bounce1"></div>
+            <div className="bounce2"></div>
+            <div className="bounce3"></div>
+          </div> 
+        </div>
+      }
       <div className="g-container">
         <Pano />
         <Map />
