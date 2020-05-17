@@ -9,6 +9,7 @@ import {
 import Start from './Start';
 import App from './App';
 import Results from './Results';
+import Lobby from './Lobby';
 
 const Routes = () => {
   return(
@@ -19,6 +20,9 @@ const Routes = () => {
         </Route>
         <Route path="/play/:id">
           <App />
+        </Route>
+        <Route path="/lobby/:id">
+          <Lobby />
         </Route>
         <Route path="/results/:id">
           <Results />
