@@ -55,6 +55,7 @@ a {
 .floating-container {
   width: 38%;
   height: 80%;
+  min-width: 512px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -66,6 +67,7 @@ a {
   display: flex;
   width: 80%;
   justify-content: space-evenly;
+  padding: 10px;
 }
 
 .mode-button-outline {
