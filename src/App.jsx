@@ -40,7 +40,7 @@ const App = () => {
         visible: false,
         cursor: 'crosshair',
         icon: { 
-          url: 'https://i.ibb.co/tXsBvbW/Guess-Marker.png',
+          url: 'https://i.ibb.co/RhL43kJ/Guess-Marker.png',
           scaledSize: new google.maps.Size(32, 32),
           anchor: new google.maps.Point(16, 16)
         }

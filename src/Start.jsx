@@ -1,13 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { AppContext } from './AppContext';
+import { AppContext, ThemeContext } from './AppContext';
 
+import LogoImage from './assets/logo.png';
 import SingleplayerImage from './assets/singleplayer.png';
 import MultiplayerImage from './assets/multiplayer.png';
 
 const Start = props => {
   const [appContext, appDispatch] = useContext(AppContext);
+  const [themeContext, themeDispatch] = useContext(ThemeContext);
+  
+  const { colors } = themeContext;
+
   const [mode, setMode] = useState({
     multiplayer: false,
     duration: 5
@@ -17,7 +22,7 @@ const Start = props => {
 
   const durations = [5, 10, 15];
 
-  const onModeSelect = multiplayer => {
+  const onPlayModeSelect = (event, multiplayer) => {
     setMode({ ...mode, multiplayer })
   };
 
@@ -26,37 +31,60 @@ const Start = props => {
   };
 
   return(
-    <div className="centered-view">
+    <div className="centered-view bg">
       <div className="floating-container">
-        <div className="main-title"><h1>Street View Adventure</h1></div>
-        <div className="start-options">
-          <div className={`mode-button-outline ${mode.multiplayer ? '' : 'selected'}`}>
-            <div onClick={event => onModeSelect(false)} className="mode-button">
-              <img src={SingleplayerImage} />
-            </div>
-          </div>
-          <div className={`mode-button-outline ${mode.multiplayer ? 'selected' : ''}`}>
-            <div onClick={event => onModeSelect(true)} className="mode-button">
-              <img src={MultiplayerImage} />
-            </div>
-          </div>
+        <div className="logo">
+          <img src={LogoImage} />
+          <h1>Street View Adventure</h1>
         </div>
-        <div className="start-options">
-          {durations.map(duration => {
-            return(
-              <div key={`duration-${duration}`} className={`mode-button-outline small ${mode.duration === duration ? 'selected' : ''}`}
-                  onClick={event => onDurationSelect(duration)}>
-                <div className="mode-button">
+        <div className="description">
+          <p>Get dropped in an unknown city and figure out where you are by navigating around in Google Street View.</p>
+          <p>Endure alone or compete with your friends!</p>
+        </div>
+        <fieldset className="start-field">
+          <legend>Select game type</legend>
+          <div className="start-options">
+            <div 
+              onClick={event => onPlayModeSelect(event, false)}
+              className="mode-button"
+              style={!mode.multiplayer ? {
+                background: colors.highlight.main
+              } : {}}>
+              <img src={SingleplayerImage} />
+              <p>Singleplayer</p>
+            </div>
+            <div 
+              onClick={event => onPlayModeSelect(event, true)} 
+              className="mode-button"
+              style={mode.multiplayer ? {
+                background: colors.highlight.main
+              } : {}}>
+              <img src={MultiplayerImage} />
+              <p>Multiplayer</p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset className="start-field">
+          <legend>Choose duration</legend>
+          <div className="start-options">
+            {durations.map(duration => {
+              return(
+                <div 
+                  className="mode-button small" 
+                  onClick={event => onDurationSelect(duration)}
+                  style={mode.duration === duration ? {
+                    background: colors.highlight.main
+                  } : {}}>
                   <h2>{duration}</h2> 
                   <p>min</p>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </fieldset>
         <div id="play-button-container">
           <Link to={`/${mode.multiplayer ? 'lobby' : 'play'}/${sessionId}`} id="play-button">
-            <h3>{mode.multiplayer ? 'Play multiplayer' : 'Play singleplayer'}</h3>
+            <h3>Play</h3>
           </Link>
         </div>
       </div>

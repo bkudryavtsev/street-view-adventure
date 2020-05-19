@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400&display=swap');
 
 :root {
   --default-map-height: 20%;
   --color-success: #d6ec73;
   --color-success-hint: #c7d391;
+  --color-highlight: #F4B82B;
+  --p-size: 1.1rem;
 }
 
 html,
@@ -11,7 +13,7 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
 }
 
 #root {
@@ -22,14 +24,32 @@ body {
 h1, h2, h3, p {
   margin-block-start: 0;
   margin-block-end: 0;
+  font-weight: 400;
+}
+
+p, legend {
+  font-size: var(--p-size);
 }
 
 a {
   text-decoration: none;
 }
 
-.main-title {
-  color: #676767;
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 64px;
+  margin: 16px;
+}
+
+.logo h1 {
+  font-weight: 200;
+}
+
+.description {
   text-align: center;
 }
 
@@ -53,52 +73,37 @@ a {
 }
 
 .floating-container {
-  width: 38%;
-  height: 80%;
-  min-width: 512px;
-  border-radius: 10px;
+  width: 512px;
+  height: 90%;
+  /* box-shadow: 0 6px 0 var(--color-success); */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  background: #fff;
+}
+
+.start-field {
+  width: 80%;
+  border-color: #ddd;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.start-field legend {
+  color: #777;
+  padding: 0 6px;
 }
 
 .start-options {
   display: flex;
-  width: 80%;
   justify-content: space-evenly;
   padding: 10px;
 }
 
-.mode-button-outline {
+.mode-button {
   width: 130px;
   height: 130px;
-  padding: 6px;
-  border: 1px solid #444;
-  border-radius: 10px; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-}
-
-.mode-button-outline.selected {
-  visibility: visible;
-}
-
-.mode-button-outline div {
-  visibility: visible;
-}
-
-.mode-button-outline.small {
-  width: 80px;
-  height: 80px;
-}
-
-.mode-button {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
   cursor: pointer;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -107,28 +112,34 @@ a {
   user-select: none;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  background: #eee;
+  background: rgb(118, 118, 118);
+  color: #fff;
 }
 
 .mode-button > img {
-  height: 60%;
+  height: 45%;
+}
+
+.mode-button.small {
+  width: 80px;
+  height: 80px;
 }
 
 #play-button-container {
+  pointer-events: none;
   width: 100%;
-  height: 64px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 #play-button {
+  pointer-events: auto;
   width: 50%;
-  height: calc(80% - 3px); /* compensation for border-bottom */ 
+  height: 50px;
   border-bottom: 3px solid var(--color-success-hint);
-  border-radius: 6px;
   max-width: 512px;
   display: flex;
   justify-content: center;
@@ -246,7 +257,6 @@ a {
   height: 480px;
   pointer-events: auto;
   background: #fff;
-  border-radius: 8px;
   box-shadow: 0 0 8px #999;
   display: flex;
   justify-content: center;
@@ -274,7 +284,6 @@ a {
 .guess-button {
   width: 100%;
   height: calc(80% - 3px); /* compensation for border-bottom (set dynamically)*/ 
-  border-radius: 6px;
   max-width: 512px;
   display: flex;
   justify-content: center;

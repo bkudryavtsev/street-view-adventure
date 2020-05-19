@@ -9,7 +9,7 @@ const Lobby = props => {
   const { id } = useParams();
 
   return(
-    <div className="centered-view">
+    <div className="centered-view bg">
       <div id="lobby">
         <div id="players">
         
