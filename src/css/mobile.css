@@ -1,0 +1,82 @@
+@media only screen and (max-width: 1000px) {
+  .start-view {
+    display: block;
+  }
+
+  .start-content {
+    width: 100%;
+    height: 100%;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+  }
+
+  .floating-container {
+    padding: 30px 40px;
+    width: 100%;
+    height: fit-content;
+    background: rgb(245, 245, 245);
+  }
+
+  .floating-container .content {
+    width: fit-content;
+    height: fit-content;
+    max-width: 600px;
+  }
+
+  .text-container h1 {
+    font-size: 2rem;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .blurb {
+    padding: 10px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .floating-container {
+    padding: 10px 20px;
+  }
+
+  .blurb {
+    padding: 8px;
+  }
+  
+  .mode-button {
+    margin: 5px;
+  }
+
+  .content .options {
+    margin-bottom: 10px;
+  }
+
+  .content .column {
+    margin: 5px 0;
+  }
+
+  .content .row {
+    margin: 5px 0;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .floating-container h3 {
+    font-size: 1rem;
+  }
+
+  .floating-container p {
+    font-size: 0.8rem;
+  }
+
+  .mode-button {
+    margin: 4px;
+    height: 50px;
+  }
+
+  .mode-button.small {
+    height: 50px;
+  }
+}

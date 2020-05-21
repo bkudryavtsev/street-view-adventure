@@ -19,9 +19,6 @@ export const colors = {
     disabled: {
       main: '#bbb',
       hint: '#aaa'
-    },
-    highlight: {
-      main: '#009159'
     }
   }
 };
