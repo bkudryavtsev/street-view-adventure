@@ -109,9 +109,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  background: rgb(245, 245, 245);
 }
 
 .floating-container .content {
