@@ -39,7 +39,7 @@
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
   :root {
     --h3-size: 1.2rem;
   }
