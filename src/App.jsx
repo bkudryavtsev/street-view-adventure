@@ -7,7 +7,7 @@ import InfoBar from './InfoBar';
 
 import { getNextLocation } from './util/db';
 
-import './spinner.css';
+import './css/spinner.css';
 
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 

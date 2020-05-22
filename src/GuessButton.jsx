@@ -4,7 +4,7 @@ import { MapsContext, AppContext, ThemeContext } from './AppContext';
 import { distance } from './util/math'; 
 import { getNextLocation, getCountryDetails } from './util/db';
 
-import './spinner.css';
+import './css/spinner.css';
 
 const GuessButton = props => {
   const [hoverState, setHover] = useState(false);
