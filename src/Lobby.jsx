@@ -9,17 +9,8 @@ const Lobby = props => {
   const { id } = useParams();
 
   return(
-    <div className="centered-view bg">
-      <div id="lobby">
-        <div id="players">
-        
-        </div>
-        <div id="play-button-container">
-          <Link to={`/play/${id}`} id="play-button">
-            <h3>Play</h3>
-          </Link>
-        </div>
-      </div>
+    <div>
+      lobby {id}
     </div>
   );
 };

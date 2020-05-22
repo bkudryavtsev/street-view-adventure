@@ -31,6 +31,8 @@ const appReducer = (state, action) => {
       return { ...state, countryDetails: action.value };
     case 'setView':
       return { ...state, appView: action.value };
+    case 'setSessionId':
+      return { ...state, sessionId: action.value };
     case 'update':
       return { ...state, update: state.update + 1 };
 
