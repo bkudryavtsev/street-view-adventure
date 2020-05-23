@@ -27,6 +27,8 @@ const StartOptions = props => {
     setMode({ ...mode, duration });  
   };
 
+  const playUrl = mode.playMode === 1 ? '/start/lobby' : '/play';
+
   return(
     <div className="content">
       <div className="blurb">
@@ -63,7 +65,7 @@ const StartOptions = props => {
         </div>
       </div>
       <div className="centered-button-container">
-        <Link to={`/${mode.playMode === 1 ? 'lobby' : 'play'}/${props.sessionId}`} className="mode-button play">
+        <Link to={playUrl} className="mode-button play">
           <h3>Play</h3>
         </Link>
       </div>

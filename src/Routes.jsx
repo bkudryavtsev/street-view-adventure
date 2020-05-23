@@ -3,7 +3,8 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 
 import Start from './Start';
@@ -14,7 +15,7 @@ const Routes = () => {
   return(
     <Router>
       <Switch>
-        <Route exact path="/">
+        <Route path="/start">
           <Start />
         </Route>
         <Route exact path="/play/:id?">
@@ -24,6 +25,7 @@ const Routes = () => {
           <Results />
         </Route>
       </Switch>
+      <Redirect to="/start" />
     </Router>
   );
 };

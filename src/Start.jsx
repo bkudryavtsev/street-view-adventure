@@ -7,9 +7,6 @@ import LogoImage from './assets/logo.png';
 import Lobby from './Lobby';
 
 const Start = props => {
-
-  const sessionId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
-
   return(
     <div className="start-view">
       <div className="start-content">
@@ -17,14 +14,8 @@ const Start = props => {
           <div className="logo">
             <img src={LogoImage} />
           </div>
-          <Switch>
-            <Route exact path="/"> 
-              <StartOptions sessionId={sessionId} />
-            </Route>
-            <Route exact path="/lobby/:id">
-              <Lobby />
-            </Route>
-          </Switch>
+          <Route exact path="/start" component={StartOptions} /> 
+          <Route exact path="/start/lobby" component={Lobby} />
         </div>
         <div className="lettering">
           <div className="text-container">
