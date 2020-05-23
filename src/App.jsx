@@ -4,10 +4,9 @@ import { MapsContext, AppContext } from './AppContext';
 import Pano from './Pano';
 import Map from './Map';
 import InfoBar from './InfoBar';
+import Spinner from './Spinner';
 
 import { getNextLocation } from './util/db';
-
-import './css/spinner.css';
 
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
@@ -104,11 +103,7 @@ const App = () => {
     <div className="app-container">
       {!mapsContext.isLoaded && 
         <div className="overlay">
-          <div className="spinner">
-            <div className="bounce1"></div>
-            <div className="bounce2"></div>
-            <div className="bounce3"></div>
-          </div> 
+          <Spinner />
         </div>
       }
       <div className="g-container">

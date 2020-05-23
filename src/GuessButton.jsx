@@ -4,7 +4,7 @@ import { MapsContext, AppContext, ThemeContext } from './AppContext';
 import { distance } from './util/math'; 
 import { getNextLocation, getCountryDetails } from './util/db';
 
-import './css/spinner.css';
+import Spinner from './Spinner';
 
 const GuessButton = props => {
   const [hoverState, setHover] = useState(false);
@@ -118,12 +118,7 @@ const GuessButton = props => {
           cursor: currentMode.cursor, 
           borderBottom: currentMode.id !== 0 && isMouseDown ? 'none' : `3px solid ${borderBottom}` 
         }}>
-      {isWaiting ? 
-        <div className="spinner">
-          <div className="bounce1"></div>
-          <div className="bounce2"></div>
-          <div className="bounce3"></div>
-        </div> : 
+      {isWaiting ? <Spinner /> : 
         <h3>{currentMode.text}</h3>
       }
     </div>
