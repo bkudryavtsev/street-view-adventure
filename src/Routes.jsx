@@ -24,8 +24,8 @@ const Routes = () => {
         <Route exact path="/results/:id?">
           <Results />
         </Route>
+        <Redirect exact from="/" to="/start" />
       </Switch>
-      <Redirect to="/start" />
     </Router>
   );
 };

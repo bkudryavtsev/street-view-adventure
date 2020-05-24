@@ -15,7 +15,7 @@ const Start = props => {
             <img src={LogoImage} />
           </div>
           <Route exact path="/start" component={StartOptions} /> 
-          <Route exact path="/start/lobby" component={Lobby} />
+          <Route exact path="/start/lobby/:sessionId?" component={Lobby} />
         </div>
         <div className="lettering">
           <div className="text-container">

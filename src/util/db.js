@@ -1,6 +1,6 @@
 import { randArrIdx, weightedRandom, nearby } from "./math";
 
-const LOCATION_RADIUS = 500; // meters
+const LOCATION_RADIUS = 300; // meters
 const SEARCH_RADIUS = 500; // meters
 
 export const getNextLocation = () => {
@@ -75,3 +75,56 @@ export const getCountryDetails = country => {
     }).catch(err => reject(err));
   });
 };
+
+export const addSessionUser = (sessionId, userName, isHost = false) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  const user = session.collection('users').doc(); 
+
+  const userPayload = { 
+    id: user.id,
+    name: userName,
+    host: isHost,
+    avatar: `https://avatars.dicebear.com/api/avataaars/${user.id}.svg`
+  };
+  
+  return new Promise((resolve, reject) => {
+    user.set(userPayload).then(() => {
+      resolve(userPayload);
+    }).catch(err => reject(err));
+  });
+};
+
+export const createSession = (hostUserName, duration) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc();
+  const sessionId = session.id;
+
+  return new Promise((resolve, reject) => {
+    session.set({ sessionId, duration }).then(() => {
+      addSessionUser(sessionId, hostUserName, true).then(user => {
+        resolve({ user, sessionId });
+      });
+    }).catch(err => reject(err));
+  }).catch(err => reject(err));
+};
+
+export const onSessionChange = (sessionId, callback) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+
+  return session.onSnapshot(snapshot => { 
+    callback(snapshot);
+  });
+};
+
+export const onUsersChange = (sessionId, callback) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  const users = session.collection('users');
+
+  return users.onSnapshot(snapshot => {
+    callback(snapshot);
+  });
+};
+
