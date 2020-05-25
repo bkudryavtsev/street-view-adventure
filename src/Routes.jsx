@@ -18,10 +18,10 @@ const Routes = () => {
         <Route path="/start">
           <Start />
         </Route>
-        <Route exact path="/play/:id?">
+        <Route exact path="/play">
           <App />
         </Route>
-        <Route exact path="/results/:id?">
+        <Route exact path="/results">
           <Results />
         </Route>
         <Redirect exact from="/" to="/start" />

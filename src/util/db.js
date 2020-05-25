@@ -1,4 +1,4 @@
-import { randArrIdx, weightedRandom, nearby } from "./math";
+import { randArrIdx, nearby } from "./math";
 
 const LOCATION_RADIUS = 300; // meters
 const SEARCH_RADIUS = 500; // meters
@@ -128,3 +128,14 @@ export const onUsersChange = (sessionId, callback) => {
   });
 };
 
+export const getSessionUsers = sessionId => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  const users = session.collection('users');
+
+  return new Promise((resolve, reject) => {
+    users.get().then(snapshot => {
+      resolve(snapshot.docs);
+    }).catch(err => reject(err));
+  });
+};

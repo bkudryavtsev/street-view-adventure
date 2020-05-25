@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Spinner from './Spinner';
 
@@ -9,25 +9,58 @@ import { createSession, addSessionUser, onUsersChange } from './util/db';
 
 const Lobby = props => {
   const [appContext, appDispatch] = useContext(AppContext);
-  const [user, setUser] = useState(null);
+
+  const [userId, setUserId] = useState(null);
+  const [usersSnapshot, setUsersSnapshot] = useState(null);
   const [connectedUsers, setConnectedUsers] = useState([]);
-  const [sessionId, setSessionId] = useState(props.match.params.sessionId);
+
+  const urlParams = new URLSearchParams(props.location.search);
+
+  const [sessionId, setSessionId] = useState(urlParams.get('s'));
   const [isLoading, setLoading] = useState(false);
 
   const userNameInputRef = useRef(null);
 
   useEffect(() => {
     if (sessionId) {
-      onUsersChange(sessionId, snapshot => {
-        const users = [];
-        snapshot.forEach(doc => {
-          users.push(doc.data());
-        });
-
-        setConnectedUsers(users);
-      });
+      // listen for changes in the user collection and save the snapshot
+      // (in case new users connect)
+      onUsersChange(sessionId, snapshot => setUsersSnapshot(snapshot));
     }
   }, [sessionId]);
+
+  useEffect(() => {
+    if (usersSnapshot) {
+      let users = [...connectedUsers];
+
+      usersSnapshot.docChanges().forEach(change => {
+        switch(change.type) {
+          case 'added':
+            users.push(change.doc.data());
+            break;
+          case 'modified':
+            const modifiedUser = change.doc.data();
+            const idx = users.findIndex(user => user.id === modifiedUser.id);
+            users[idx] = modifiedUser;
+            break;
+          case 'removed':
+            const removedUser = change.doc.data();
+            users = users.filter(user => user.id !== removedUser.id);
+            break;
+
+          default:
+        }
+      });
+
+      const localUserId = localStorage.getItem('userId');
+      
+      if (users.find(user => user.id === localUserId)) {
+        setUserId(localUserId);
+      }
+
+      setConnectedUsers(users);
+    }
+  }, [usersSnapshot]);
 
   const onUserCreate = event => {
     event.preventDefault();
@@ -35,14 +68,24 @@ const Lobby = props => {
     if (!sessionId) {
       setLoading(true);
       createSession(userName, 5).then(res => {
+        props.history.replace({
+          pathname: props.match.path,
+          search: `?s=${res.sessionId}`
+        });
+
         setSessionId(res.sessionId);
-        setUser(res.user);
+        
+        localStorage.setItem('userId', res.user.id);
+        setUserId(res.user.id);
+        
         setLoading(false);
       });
     } else {
       setLoading(true);
       addSessionUser(sessionId, userName).then(user => {
-        setUser(user);
+        localStorage.setItem('userId', user.id);
+        setUserId(user.id);
+
         setLoading(false);
       });
     }
@@ -54,7 +97,7 @@ const Lobby = props => {
     );
   }
 
-  if (!user) {
+  if (!userId) {
     return(
       <div>
         <form onSubmit={onUserCreate}>
@@ -77,12 +120,13 @@ const Lobby = props => {
           })}
         </ul>
         <input
+          className="shareable-link"
           type="text" 
           onClick={event => {
             event.target.focus();
             event.target.select();
           }}
-          value={`localhost:1234/start/lobby/${sessionId}`} 
+          value={window.location.href} 
           readOnly>
         </input>
       </div>
