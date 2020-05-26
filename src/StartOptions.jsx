@@ -39,13 +39,14 @@ const StartOptions = props => {
           {Array.from(playModeMap.keys()).map(playMode => {
             const playModeDetails = playModeMap.get(playMode);
             return(
-              <div 
+              <a
+                href="#"
                 key={'playMode' + playMode}
-                className={`mode-button ${playMode === mode.playMode ? 'selected' : ''}`} 
+                className={`button ${playMode === mode.playMode ? 'active' : ''}`} 
                 onClick={event => onPlayModeSelect(playMode)}>
                 <img src={playModeDetails.icon} />
                 <h3>{playModeDetails.title}</h3>
-              </div>
+              </a>
             );
           })}
         </div>
@@ -53,19 +54,20 @@ const StartOptions = props => {
           {Array.from(durationMap.keys()).map(durationName => {
             const duration = durationMap.get(durationName);
             return(
-              <div 
+              <a
+                href="#"
                 key={'duration' + duration}
-                className={`mode-button small ${duration === mode.duration ? 'selected' : ''}`}
+                className={`button small ${duration === mode.duration ? 'active' : ''}`}
                 onClick={event => onDurationSelect(duration)}>
                 <h3>{durationName}</h3>
                 <p>{duration} {!isNaN(duration) && 'min'}</p>
-              </div>
+              </a>
             );
           })}
         </div>
       </div>
       <div className="centered-button-container">
-        <Link to={playUrl} className="mode-button play">
+        <Link to={playUrl} className="button play">
           <h3>Play</h3>
         </Link>
       </div>

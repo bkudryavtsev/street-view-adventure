@@ -24,7 +24,7 @@ const Lobby = props => {
   useEffect(() => {
     if (sessionId) {
       // listen for changes in the user collection and save the snapshot
-      // (in case new users connect)
+      // (e.g. when new users connect)
       onUsersChange(sessionId, snapshot => setUsersSnapshot(snapshot));
     }
   }, [sessionId]);
@@ -99,17 +99,37 @@ const Lobby = props => {
 
   if (!userId) {
     return(
-      <div>
-        <form onSubmit={onUserCreate}>
-          <input type="text" placeholder="Enter a nickname" ref={userNameInputRef}/>
-          <input type="submit" value="Enter lobby" />
+      <div className="content centered-vertical">
+        <form className="user-name-form" onSubmit={onUserCreate}>
+          <input 
+            type="text"
+            placeholder="Enter a nickname"
+            ref={userNameInputRef} 
+            required 
+            autoFocus />
+          <div className="centered-button-container">
+            <button type="submit" className="button play">
+              <h3>Join lobby</h3>
+            </button>
+          </div>
         </form>
       </div>
     );
   } else {
     return(
-      <div>
-        <ul>
+      <div className="content centered-vertical">
+        <div className="blurb">
+          <h3>Share this link with your friends</h3>
+        </div>
+        <input
+          className="shareable-link"
+          type="text" 
+          onFocus={event => event.target.select()}
+          value={window.location.href} 
+          readOnly
+          autoFocus>
+        </input>
+        <ul className="user-list">
           {connectedUsers.map(connectedUser => {
             return(
               <li key={connectedUser.id}>
@@ -119,16 +139,11 @@ const Lobby = props => {
             );
           })}
         </ul>
-        <input
-          className="shareable-link"
-          type="text" 
-          onClick={event => {
-            event.target.focus();
-            event.target.select();
-          }}
-          value={window.location.href} 
-          readOnly>
-        </input>
+        <div className="centered-button-container">
+          <a className="button play">
+            <h3>Play</h3>
+          </a>
+        </div>
       </div>
     );
   }

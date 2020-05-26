@@ -69,7 +69,7 @@
     padding: 8px;
   }
   
-  .mode-button {
+  .button {
     margin: 5px;
   }
 
@@ -95,12 +95,12 @@
     font-size: 0.8rem;
   }
 
-  .mode-button {
+  .button {
     margin: 4px;
     height: 50px;
   }
 
-  .mode-button.small {
+  .button.small {
     height: 50px;
   }
 }

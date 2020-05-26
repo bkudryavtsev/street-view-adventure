@@ -2,9 +2,9 @@
 
 :root {
   --default-map-height: 20%;
-  --color-success: #d6ec73;
-  --color-success-hint: #c7d391;
-  --color-highlight: #F4B82B;
+  --color-success: #4F80B2;
+  --color-highlight: #646464;
+  --color-baseline: rgb(100, 100, 100);
   --p-size: 1.06rem;
   --h3-size: 1.24rem;
 }
@@ -26,7 +26,6 @@ h1, h2, h3, p {
   margin-block-start: 0;
   margin-block-end: 0;
   font-weight: 400;
-  color: #646464;
 }
 
 h3 {
@@ -39,6 +38,28 @@ p {
 
 a {
   text-decoration: none;
+}
+
+form {
+  width: 100%;
+}
+
+input[type=text] {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 4px solid var(--color-baseline);
+  padding: 4px 15px;
+  text-align: center;
+  font-size: var(--h3-size);
+  margin: 0;
+  color: #555;
+}
+
+input[type=text]:focus {
+  outline: none;
+  border-bottom: 4px solid var(--color-success);
 }
 
 .logo {
@@ -92,7 +113,7 @@ a {
 .lettering .text-container {
   padding: 0 15px;
   margin: 10px 0;
-  background: #4F80B2; 
+  background: var(--color-success); 
   width: min-content;
 }
 
@@ -121,6 +142,10 @@ a {
   align-items: center;
 }
 
+.content.centered-vertical {
+  justify-content: center;
+}
+
 .content .options {
   width: 85%;
   display: flex;
@@ -144,9 +169,11 @@ a {
 
 .blurb {
   text-align: center;
+  color: var(--color-baseline);
 }
 
-.mode-button {
+.button {
+  position: relative;
   margin: 8px;
   padding: 0 16px;
   width: calc(100% - 32px);
@@ -161,45 +188,126 @@ a {
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  color: #646464;
-  border-bottom: 4px solid #888;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  color: var(--color-highlight);
+  border: none;
+  /* border-bottom: 4px solid var(--color-baseline); */
 }
 
-.mode-button > img {
+.button > img {
   height: 45%;
 }
 
-.mode-button:hover {
-  border-bottom: 4px solid #646464;
+.button::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-success);
+  height: 0;
+  transition: all 150ms ease-out;
+  -webkit-transition: all 150ms ease-out;
 }
 
-.mode-button.selected {
-  border-bottom: 4px solid #4F80B2;
+.button::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(214, 214, 214);
+  height: 4px;
+  transition: all 300ms ease-out;
+  -webkit-transition: all 300ms ease-out;
 }
 
-.mode-button.small {
+.button:focus {
+  outline: none;
+}
+
+.button:hover::before, 
+.button:focus::before,
+.button.active::before {
+  outline: none;
+  height: 4px;
+}
+
+.button.small {
   margin: 0;
   width: calc(30% - 32px);
   flex-direction: column;
   justify-content: center;
 }
 
-.mode-button.small p {
+.button.small p {
   font-size: 1rem;
 }
 
-.mode-button.play {
+.button.play {
   width: 120px; 
   height: 45px;
   justify-content: center;
   margin: 0;
   margin-top: 5px;
+  background: var(--color-success);
+  color: #fff;
+}
+
+.button.play::after {
+  background: var(--color-success);
+}
+
+.button.play::before {
+  background: #f4b82b;
+}
+
+button.button.play {
+  width: 140px;
 }
 
 .centered-button-container {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.user-name-form {
+  width: 80%;
+  max-width: 225px;
+}
+
+.user-name-form .button.play {
+  margin-top: 15px;
+}
+
+ul.user-list {
+  padding-inline-start: 0;
+  list-style-type: none;
+  width: 100%;
+  height: 250px;
+  overflow-y: scroll;
+  background: #fff;
+}
+
+.user-list li {
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.user-list li:hover {
+  background: #eee; 
+}
+
+.user-list li img {
+  width: 64px;
+  height: 40px;
 }
 
 .app-container {
@@ -317,7 +425,6 @@ a {
   height: 120px;
   border-radius: 50%;
   border: 4px solid #eee;
-  box-shadow: 0 0 3px #999;
   overflow: hidden;
   display: flex;
   justify-content: center;
