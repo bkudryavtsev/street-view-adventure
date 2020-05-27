@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from 'react';
-import { colors as themeColors } from './theme';
+import { colors as themeColors } from './util/theme';
 
 export const AppContext = createContext();
 export const MapsContext = createContext();
@@ -51,6 +51,8 @@ export const AppContextProvider = props => {
 
 const mapsReducer = (state, action) => {
   switch(action.type) {
+    case 'setApiLoaded':
+      return { ...state, isApiLoaded: action.value };
     case 'setLoaded':
       return { ...state, isLoaded: action.value };
     case 'setPano':

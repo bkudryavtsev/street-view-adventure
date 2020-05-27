@@ -11,9 +11,12 @@ import Start from './Start';
 import App from './App';
 import Results from './Results';
 
+import MapsApi from './util/MapsApi';
+
 const Routes = () => {
   return(
     <Router>
+      <MapsApi />
       <Switch>
         <Route path="/start">
           <Start />

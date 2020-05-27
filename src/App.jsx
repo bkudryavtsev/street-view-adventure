@@ -1,20 +1,20 @@
 import React, { useContext, useEffect } from 'react';
-import { MapsContext, AppContext } from './AppContext';
+import { AppContext, MapsContext } from './AppContext';
+
+import { getNextLocation } from './util/db';
 
 import Pano from './Pano';
 import Map from './Map';
 import InfoBar from './InfoBar';
 import Spinner from './Spinner';
 
-import { getNextLocation } from './util/db';
-
 import './styles/app.scss';
 
 const App = () => {
-  const [mapsContext, mapsDispatch] = useContext(MapsContext); 
   const [appContext, appDispatch] = useContext(AppContext);
+  const [mapsContext, mapsDispatch] = useContext(MapsContext); 
 
-  window.initMaps = function() {
+  window.loadMaps = () => {
     getNextLocation().then(location => {
       const panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
@@ -84,22 +84,18 @@ const App = () => {
       mapsDispatch({ type: 'setGuessMarker', value: guessMarker });
       mapsDispatch({ type: 'setLocationMarker', value: locationMarker });
       mapsDispatch({ type: 'setGuessLine', value: line });
-
+      
       mapsDispatch({ type: 'setLoaded', value: true });
 
-      console.log('Maps loaded');
+      console.log('Map/Pano elements loaded');
     });
-  }
-  
-  useEffect(() => {
-    const mapsApiScript = document.createElement('script');
-    mapsApiScript.type = 'text/javascript';
-    mapsApiScript.defer = true;
-    mapsApiScript.async = true; 
-    mapsApiScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&callback=initMaps`; 
+  };
 
-    document.body.appendChild(mapsApiScript);
-  }, []);
+  useEffect(() => {
+    if (mapsContext.isApiLoaded) {
+      window.loadMaps();
+    }
+  }, [mapsContext.isApiLoaded]);
   
   return ( 
     <div className="app-container">
