@@ -1,5 +1,7 @@
 import { randArrIdx, nearby } from "./math";
 
+import { durationMap } from './constants';
+
 const LOCATION_RADIUS = 300; // meters
 const SEARCH_RADIUS = 500; // meters
 
@@ -95,18 +97,20 @@ export const addSessionUser = (sessionId, userName, isHost = false) => {
   });
 };
 
-export const createSession = (hostUserName, duration) => {
+export const createSession = hostUserName => {
   const db = firebase.firestore();
   const session = db.collection('sessions').doc();
   const sessionId = session.id;
 
+  const defaultDuration = Array.from(durationMap)[0][1];
+
   return new Promise((resolve, reject) => {
-    session.set({ sessionId, duration }).then(() => {
+    session.set({ sessionId, duration: defaultDuration, inGame: false }).then(() => {
       addSessionUser(sessionId, hostUserName, true).then(user => {
         resolve({ user, sessionId });
       });
     }).catch(err => reject(err));
-  }).catch(err => reject(err));
+  });
 };
 
 export const onSessionChange = (sessionId, callback) => {
@@ -116,6 +120,13 @@ export const onSessionChange = (sessionId, callback) => {
   return session.onSnapshot(snapshot => { 
     callback(snapshot);
   });
+};
+
+export const updateSessionParams = (sessionId, params) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+
+  return session.update(params);
 };
 
 export const onUsersChange = (sessionId, callback) => {
@@ -139,3 +150,4 @@ export const getSessionUsers = sessionId => {
     }).catch(err => reject(err));
   });
 };
+

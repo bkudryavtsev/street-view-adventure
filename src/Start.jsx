@@ -1,7 +1,5 @@
 import React from 'react';
-import { Switch, Route } from "react-router-dom";
-
-import StartOptions from './StartOptions';
+import { Route } from "react-router-dom";
 
 import LogoImage from './assets/logo.png';
 import Lobby from './Lobby';
@@ -14,8 +12,7 @@ const Start = props => {
           <div className="logo">
             <img src={LogoImage} />
           </div>
-          <Route exact path="/start" component={StartOptions} /> 
-          <Route exact path="/start/lobby" component={Lobby} />
+          <Route exact path="/start" component={Lobby} />
         </div>
         <div className="lettering">
           <div className="text-container">

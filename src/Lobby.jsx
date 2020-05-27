@@ -1,11 +1,12 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 
 import Spinner from './Spinner';
 
 import { AppContext } from './AppContext';
 
-import { createSession, addSessionUser, onUsersChange } from './util/db';
+import { createSession, onSessionChange, 
+  addSessionUser, onUsersChange, updateSessionParams } from './util/db';
+import StartOptions from './StartOptions';
 
 const Lobby = props => {
   const [appContext, appDispatch] = useContext(AppContext);
@@ -13,6 +14,7 @@ const Lobby = props => {
   const [userId, setUserId] = useState(null);
   const [usersSnapshot, setUsersSnapshot] = useState(null);
   const [connectedUsers, setConnectedUsers] = useState([]);
+  const [selectedDuration, selectDuration] = useState(null);
 
   const urlParams = new URLSearchParams(props.location.search);
 
@@ -25,7 +27,27 @@ const Lobby = props => {
     if (sessionId) {
       // listen for changes in the user collection and save the snapshot
       // (e.g. when new users connect)
-      onUsersChange(sessionId, snapshot => setUsersSnapshot(snapshot));
+      const releaseUsersListener = onUsersChange(sessionId, snapshot => 
+        setUsersSnapshot(snapshot));
+
+      const releaseSessionListener = onSessionChange(sessionId, snapshot => {
+        const data = snapshot.data();
+        if (data.duration !== selectedDuration) {
+          selectDuration(data.duration);
+        }
+
+        if (data.inGame) {
+          props.history.replace({
+            pathname: '/play',
+            search: `?s=${sessionId}`
+          });
+        } 
+      });
+
+      return () => {
+        releaseUsersListener();
+        releaseSessionListener();
+      };
     }
   }, [sessionId]);
 
@@ -64,10 +86,10 @@ const Lobby = props => {
 
   const onUserCreate = event => {
     event.preventDefault();
-    const userName = userNameInputRef.current.value;
+    const userName = userNameInputRef.current.value.trim();
     if (!sessionId) {
       setLoading(true);
-      createSession(userName, 5).then(res => {
+      createSession(userName).then(res => {
         props.history.replace({
           pathname: props.match.path,
           search: `?s=${res.sessionId}`
@@ -91,6 +113,14 @@ const Lobby = props => {
     }
   };
 
+  const updateDuration = duration => {
+    return updateSessionParams(sessionId, { duration });
+  };
+
+  const onPlay = event => {
+    return updateSessionParams(sessionId, { inGame: true });
+  };
+
   if (isLoading) {
     return(
       <Spinner />
@@ -100,6 +130,9 @@ const Lobby = props => {
   if (!userId) {
     return(
       <div className="content centered-vertical">
+        <div className="blurb">
+          <h3>Find yourself in an unknown place and figure out where you are by navigating around in Google Street View.</h3>
+        </div>
         <form className="user-name-form" onSubmit={onUserCreate}>
           <input 
             type="text"
@@ -109,7 +142,7 @@ const Lobby = props => {
             autoFocus />
           <div className="centered-button-container">
             <button type="submit" className="button play">
-              <h3>Join lobby</h3>
+              <h3>Start</h3>
             </button>
           </div>
         </form>
@@ -119,7 +152,7 @@ const Lobby = props => {
     return(
       <div className="content centered-vertical">
         <div className="blurb">
-          <h3>Share this link with your friends</h3>
+          <p>Share this link to play with your friends</p>
         </div>
         <input
           className="shareable-link"
@@ -139,8 +172,11 @@ const Lobby = props => {
             );
           })}
         </ul>
+        <StartOptions duration={selectedDuration} onDurationChange={updateDuration}/>
         <div className="centered-button-container">
-          <a className="button play">
+          <a 
+            className="button play"
+            onClick={onPlay}>
             <h3>Play</h3>
           </a>
         </div>
