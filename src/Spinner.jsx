@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './css/spinner.css';
+import './styles/spinner.scss';
 
 const Spinner = props => {
   return(
