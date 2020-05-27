@@ -8,6 +8,8 @@ import Spinner from './Spinner';
 
 import { getNextLocation } from './util/db';
 
+import './styles/app.scss';
+
 const App = () => {
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
   const [appContext, appDispatch] = useContext(AppContext);

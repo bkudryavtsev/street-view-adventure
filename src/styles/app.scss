@@ -1,0 +1,143 @@
+$default-map-height: 20%;
+
+.app-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.g-container {
+  position: relative;
+  flex: 10;
+}
+
+#pano {
+  height: 100% - $default-map-height;
+}
+
+.map-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  top: 0;
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.map-container {
+  position: relative;
+  height: $default-map-height;
+  pointer-events: auto;
+  transition: 300ms;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.info-bar {
+  display: flex;
+  width: 100%;
+  height: 70px;
+
+  .s1 {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+  }
+}
+
+.centered-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.expand-btn-wrapper {
+  position: absolute;
+  z-index: 6;
+  width: 100%;
+  margin-top: -16px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pill-btn {
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  background: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 200ms;
+
+  &:hover {
+    background: #ecd873;   
+  }
+}
+
+.location-card-wrapper {
+  position: absolute;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  margin: 40px;
+  width: 300px;
+  height: 480px;
+  pointer-events: auto;
+  background: #fff;
+  box-shadow: 0 0 8px #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .card-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #eee;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+
+    img {
+      height: 120px;
+    }
+  }
+}
+
+.guess-button {
+  width: 100%;
+  height: calc(80% - 3px); /* compensation for border-bottom (set dynamically)*/ 
+  max-width: 512px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  transition: 200ms;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
