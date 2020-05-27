@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { MapsContextProvider, 
-  AppContextProvider, ThemeContextProvider } from './AppContext';
+import { MapsContextProvider, AppContextProvider } from './AppContext';
 import Routes from './Routes';
 
 ReactDOM.render(
   <AppContextProvider>
     <MapsContextProvider>
-      <ThemeContextProvider>
-        <Routes />
-      </ThemeContextProvider>
+      <Routes />
     </MapsContextProvider>
   </AppContextProvider>,
   document.getElementById('root'));

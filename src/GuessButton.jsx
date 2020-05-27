@@ -14,11 +14,9 @@ const GuessButton = props => {
 
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
   const [appContext, appDispatch] = useContext(AppContext);
-  const [themeContext, themeDispatch] = useContext(ThemeContext);
   
   const { guessMarker, locationMarker } = mapsContext;
 
-  const themeColors = themeContext.colors;
   const guessMarkerPosition = guessMarker && guessMarker.getPosition();
   const locationMarkerPosition = locationMarker && locationMarker.getPosition();
   const locationMarkerPositionJSON = locationMarkerPosition && locationMarkerPosition.toJSON();
@@ -27,28 +25,18 @@ const GuessButton = props => {
   const modes = {
     disabled: {
       id: 0,
-      background: {
-        default: themeColors.disabled,
-        hover: themeColors.disabled
-      },
-      cursor: 'default',
+      className: 'disabled',
       text: 'Click on map to place a marker'
     },
     ready: {
       id: 1,
-      background: {
-        default: themeColors.success,
-        hover: themeColors.secondary
-      },
+      className: 'ready',
       cursor: 'pointer',
       text: 'Guess'
     },
     next: {
       id: 2,
-      background: {
-        default: themeColors.secondary,
-        hover: themeColors.success
-      },
+      className: 'next',
       cursor: 'pointer',
       text: 'Next location'
     }
@@ -100,11 +88,8 @@ const GuessButton = props => {
     }
   };
 
-  const background = hoverState ? currentMode.background.hover.main : currentMode.background.default.main;
-  const borderBottom = hoverState ? currentMode.background.hover.hint : currentMode.background.default.hint;
-
   return(
-    <div className="guess-button" 
+    <a className={`button play full-width ${currentMode.className}`}
         onClick={onGuess}
         onMouseEnter={event => setHover(true)}
         onMouseLeave={event => {
@@ -112,16 +97,11 @@ const GuessButton = props => {
           setMouseDown(false);
         }}
         onMouseDown={event => setMouseDown(true)}
-        onMouseUp={event => setMouseDown(false)}
-        style={{
-          background: background, 
-          cursor: currentMode.cursor, 
-          borderBottom: currentMode.id !== 0 && isMouseDown ? 'none' : `3px solid ${borderBottom}` 
-        }}>
+        onMouseUp={event => setMouseDown(false)}>
       {isWaiting ? <Spinner /> : 
         <h3>{currentMode.text}</h3>
       }
-    </div>
+    </a>
   );
 };
 

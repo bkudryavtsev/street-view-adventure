@@ -18,16 +18,16 @@
 
   .lettering {
     height: 40%;
+
+    .text-container h1 {
+      font-size: 2rem;
+    }
   }
 
   .floating-container .content {
     width: fit-content;
     height: fit-content;
     max-width: 600px;
-  }
-
-  .text-container h1 {
-    font-size: 2rem;
   }
 
   .logo {
@@ -40,8 +40,8 @@
 }
 
 @media only screen and (max-width: 500px) {
-  :root {
-    --h3-size: 1.2rem;
+  h3 {
+    font-size: 1.2rem;
   }
 
   .floating-container {
@@ -55,14 +55,14 @@
 
   .lettering {
     height: 30%;
-  }
+    
+    .text-container {
+      margin: 6px 0;
 
-  .lettering .text-container {
-    margin: 6px 0;
-  }
-
-  .text-container h1 {
-    font-size: 1.5rem;
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
   }
 
   .blurb {
@@ -71,6 +71,12 @@
   
   .button {
     margin: 5px;
+
+    &.small {
+      p {
+        font-size: 0.9rem;
+      }
+    }
   }
 
   .content .options {
@@ -87,20 +93,22 @@
 }
 
 @media only screen and (max-width: 350px) {
-  .floating-container h3 {
+  h3 {
     font-size: 1rem;
   }
 
   .floating-container p {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .button {
     margin: 4px;
     height: 50px;
-  }
 
-  .button.small {
-    height: 50px;
+    &.small {
+      p {
+        font-size: 0.8rem;
+      }
+    }
   }
 }

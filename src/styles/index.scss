@@ -3,6 +3,9 @@
 $color-success: #4F80B2;
 $color-highlight: #646464;
 $color-baseline: rgb(100, 100, 100);
+$color-disabled: #bbb;
+$color-secondary: #f4b82b;
+$color-hint: rgb(214, 214, 214); 
 $p-size: 1.06rem;
 $h3-size: 1.24rem;
 
@@ -52,11 +55,16 @@ input[type=text] {
   font-size: $h3-size;
   margin: 0;
   color: #555;
-}
 
-input[type=text]:focus {
-  outline: none;
-  border-bottom: 4px solid $color-success;
+  &:focus {
+    outline: none;
+    border-bottom: 4px solid $color-success;
+  }
+
+  &::selection {
+    color: #fff;
+    background: $color-success; 
+  }
 }
 
 .logo {
@@ -183,13 +191,14 @@ input[type=text]:focus {
   -ms-user-select: none;
   user-select: none;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background: #fff;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
   color: $color-highlight;
   border: none;
+  text-align: center;
 
   &::before {
     content: "";
@@ -211,7 +220,7 @@ input[type=text]:focus {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgb(214, 214, 214);
+    background: $color-hint; 
     height: 4px;
     transition: all 300ms ease-out;
     -webkit-transition: all 300ms ease-out;
@@ -240,13 +249,21 @@ input[type=text]:focus {
   }
 
   &.play {
-    width: 120px; 
-    height: 45px;
+    padding: 0 30px;
     justify-content: center;
+    height: 45px;
+    width: 140px;
     margin: 0;
     margin-top: 5px;
     background: $color-success;
     color: #fff;
+
+    &.full-width {
+      margin: 0;
+      height: 90%;
+      width: 100%;
+    }
+
   }
 
   &.play::after {
@@ -254,12 +271,28 @@ input[type=text]:focus {
   }
 
   &.play::before {
-    background: #f4b82b;
+    background: $color-secondary;
   }
-}
 
-button.button.play {
-  width: 140px;
+  &.disabled {
+    color: $color-highlight;
+    background: $color-disabled;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  &.disabled::after {
+    background: $color-hint;  
+  }
+
+  &.ready {
+    color: $color-highlight;
+    background: #d6ec73;
+
+    &::after {
+      background: $color-hint;
+    }
+  }
 }
 
 .centered-button-container {
