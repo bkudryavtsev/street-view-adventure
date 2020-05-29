@@ -83,11 +83,13 @@ export const addSessionUser = (sessionId, userName, isHost = false) => {
   const session = db.collection('sessions').doc(sessionId); 
   const user = session.collection('users').doc(); 
 
+  const avatar = `https://avatars.dicebear.com/api/avataaars/${user.id}.svg?w=128&h=128&style=circle&mode=exclude&top[]=turban&top[]=hijab&topChance=84&accessoriesChance=27&facialHairChance=14&eyes[]=cry&eyes[]=close&mouth[]=vomit&mouth[]=eating&mouth[]=grimace&mouth[]=sad&mouth[]=scream`;
+
   const userPayload = { 
     id: user.id,
     name: userName,
     host: isHost,
-    avatar: `https://avatars.dicebear.com/api/avataaars/${user.id}.svg`
+    avatar
   };
   
   return new Promise((resolve, reject) => {
@@ -103,9 +105,18 @@ export const createSession = hostUserName => {
   const sessionId = session.id;
 
   const defaultDuration = Array.from(durationMap)[0][1];
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 1); // 24 hours
+
+  const initialState = {
+    sessionId,
+    duration: defaultDuration,
+    inGame: false,
+    expirationDate: expirationDate.toISOString()
+  };
 
   return new Promise((resolve, reject) => {
-    session.set({ sessionId, duration: defaultDuration, inGame: false }).then(() => {
+    session.set(initialState).then(() => {
       addSessionUser(sessionId, hostUserName, true).then(user => {
         resolve({ user, sessionId });
       });

@@ -166,8 +166,12 @@ const Lobby = props => {
           {connectedUsers.map(connectedUser => {
             return(
               <li key={connectedUser.id}>
-                <img src={connectedUser.avatar} />
-                {connectedUser.name}
+                <div>
+                  <img src={connectedUser.avatar} />
+                  {connectedUser.name}
+                </div>
+
+                {connectedUser.host && <i>host</i>}
               </li>
             );
           })}
