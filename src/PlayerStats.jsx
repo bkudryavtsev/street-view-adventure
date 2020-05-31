@@ -16,7 +16,7 @@ const PlayerStats = props => {
   useEffect(() => {
     if (gameStartTime) {
       const duration = appContext.sessionParams.duration;
-      const endTime = gameStartTime + duration * 60000; 
+      const endTime = !isNaN(duration) ? gameStartTime + duration * 60000 : null; 
       setTimerEnd(endTime);
     }
   }, [gameStartTime]);
