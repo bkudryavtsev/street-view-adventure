@@ -4,7 +4,4 @@ A web-based geography guessing game inspired by [GeoGuessr](https://www.geoguess
 ![Image of lobby](https://i.ibb.co/t3pCbsF/Screen-Shot-2020-05-31-at-14-19-57.png)
 
 ## Stack
-Street View Adventure utilizes React.js and the Google Maps JavaScript API as its core technologies, 
-and Firebase for the data and session storage.
-
-
+Street View Adventure utilizes the Google Maps JavaScript API and React.js bundled with Parcel and Sass. Firebase is used as a backend for data and session storage.
