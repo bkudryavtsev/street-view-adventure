@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 
 import LogoImage from './assets/logo.png';
 import Lobby from './Lobby';
+import Results from './Results';
 
 const Start = props => {
   return(
@@ -13,6 +14,7 @@ const Start = props => {
             <img src={LogoImage} />
           </div>
           <Route exact path="/start" component={Lobby} />
+          <Route exact path="/start/results" component={Results} />
         </div>
         <div className="lettering">
           <div className="text-container">

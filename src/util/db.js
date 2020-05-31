@@ -105,14 +105,15 @@ export const createSession = hostUserName => {
   const sessionId = session.id;
 
   const defaultDuration = Array.from(durationMap)[0][1];
-  const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 1); // 24 hours
+  const currentDate = new Date();
+  const expirationDate = new Date(currentDate.getDate() + 1); // 24 hours
 
   const initialState = {
     sessionId,
     duration: defaultDuration,
     inGame: false,
-    expirationDate: expirationDate.toISOString()
+    expirationDate: expirationDate.toISOString(),
+    gameStartTime: null 
   };
 
   return new Promise((resolve, reject) => {
@@ -138,6 +139,33 @@ export const updateSessionParams = (sessionId, params) => {
   const session = db.collection('sessions').doc(sessionId); 
 
   return session.update(params);
+};
+
+export const getSessionParams = sessionId => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  
+  return new Promise((resolve, reject) => {
+    session.get()
+      .then(doc => {
+        if (doc.exists) resolve(doc.data());
+        else reject('Session ID does not exist');
+      }).catch(err => reject(err));
+  });
+};
+
+export const getUser = (sessionId, userId) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  const users = session.collection('users');
+  
+  return new Promise((resolve, reject) => {
+    users.doc(userId).get()
+      .then(doc => {
+        if (doc.exists) resolve(doc.data());
+        else reject('User ID does not exist in session');
+      }).catch(err => reject(err));
+  });
 };
 
 export const onUsersChange = (sessionId, callback) => {

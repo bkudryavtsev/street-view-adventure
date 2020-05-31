@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { AppContext, MapsContext } from './AppContext';
 
-import { getNextLocation } from './util/db';
+import { getNextLocation, getSessionParams, 
+  updateSessionParams, getUser } from './util/db';
+import { getTimestamp } from './util/time';
 
 import Pano from './Pano';
 import Map from './Map';
@@ -10,9 +12,12 @@ import Spinner from './Spinner';
 
 import './styles/app.scss';
 
-const App = () => {
+const App = props => {
   const [appContext, appDispatch] = useContext(AppContext);
   const [mapsContext, mapsDispatch] = useContext(MapsContext); 
+
+  const sessionId = (new URLSearchParams(props.location.search)).get('s');
+  const userId = localStorage.getItem('userId');
 
   window.loadMaps = () => {
     getNextLocation().then(location => {
@@ -94,12 +99,33 @@ const App = () => {
   useEffect(() => {
     if (mapsContext.isApiLoaded) {
       window.loadMaps();
+      getSessionParams(sessionId).then(data => {
+        getUser(sessionId, userId).then(user => {
+          if (!data.gameStartTime && user.host) {
+            const gameStartTime = getTimestamp(); 
+            updateSessionParams(sessionId, { gameStartTime }).then(() => {
+              appDispatch({ type: 'setSessionParams', value: { ...data, gameStartTime } });
+            });
+          } else {
+            appDispatch({ type: 'setSessionParams', value: data });
+          }
+        }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
     }
   }, [mapsContext.isApiLoaded]);
+
+  useEffect(() => {
+    if (appContext.countdownComplete) {
+      props.history.replace({
+        pathname: '/start/results',
+        search: `?s=${sessionId}`
+      });
+    }
+  }, [appContext.countdownComplete]);
   
   return ( 
     <div className="app-container">
-      {!mapsContext.isLoaded && 
+      {!mapsContext.isLoaded || !appContext.sessionParams.gameStartTime && 
         <div className="overlay">
           <Spinner />
         </div>

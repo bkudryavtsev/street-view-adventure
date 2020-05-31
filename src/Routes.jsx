@@ -9,7 +9,6 @@ import {
 
 import Start from './Start';
 import App from './App';
-import Results from './Results';
 
 import MapsApi from './util/MapsApi';
 
@@ -18,15 +17,8 @@ const Routes = () => {
     <Router>
       <MapsApi />
       <Switch>
-        <Route path="/start">
-          <Start />
-        </Route>
-        <Route exact path="/play">
-          <App />
-        </Route>
-        <Route exact path="/results">
-          <Results />
-        </Route>
+        <Route path="/start" component={Start} />
+        <Route exact path="/play" component={App} />
         <Redirect exact from="/" to="/start" />
       </Switch>
     </Router>
