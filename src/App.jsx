@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { AppContext, MapsContext } from './AppContext';
 
 import { getNextLocation, getSessionParams, 
-  updateSessionParams, getUser } from './util/db';
+  updateSessionParams, getUser, onSessionChange } from './util/db';
 import { getTimestamp } from './util/time';
 
 import Pano from './Pano';
@@ -107,7 +107,13 @@ const App = props => {
               appDispatch({ type: 'setSessionParams', value: { ...data, gameStartTime } });
             });
           } else {
-            appDispatch({ type: 'setSessionParams', value: data });
+            const unsub = onSessionChange(sessionId, snapshot => {
+              const snapshotData = snapshot.data();
+              if (snapshotData.gameStartTime) {
+                appDispatch({ type: 'setSessionParams', value: snapshotData });
+                unsub();
+              }
+            });
           }
         }).catch(err => console.log(err));
       }).catch(err => console.log(err));
