@@ -115,6 +115,8 @@ const App = props => {
               }
             });
           }
+
+          appDispatch({ type: 'setUserParams', value: user });
         }).catch(err => console.log(err));
       }).catch(err => console.log(err));
     }

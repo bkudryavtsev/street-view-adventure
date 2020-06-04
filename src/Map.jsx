@@ -15,7 +15,7 @@ const Map = props => {
   const { isLoaded, pano, map, 
     locationMarker, guessMarker, guessLine } = mapsContext;
   const { isMapExpanded, location, countryDetails, 
-    appView, guessDistances, currentRound } = appContext;
+    appView, guessDistances } = appContext;
   
   if (isLoaded && locationMarker) {
     const currLocation = locationMarker.getPosition();
@@ -105,7 +105,7 @@ const Map = props => {
               flagUrl={countryDetails.flag}
               city={location.city}
               country={countryDetails.name}
-              guessDistance={guessDistances[currentRound]}
+              guessDistance={guessDistances[guessDistances.length - 1]}
             />
           </div>
         }

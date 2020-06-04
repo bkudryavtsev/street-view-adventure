@@ -89,6 +89,8 @@ export const addSessionUser = (sessionId, userName, isHost = false) => {
     id: user.id,
     name: userName,
     host: isHost,
+    locationsVisited: 1,
+    score: 0,
     avatar
   };
   
@@ -168,6 +170,16 @@ export const getUser = (sessionId, userId) => {
   });
 };
 
+export const onUserChange = (sessionId, userId, callback) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  const user = session.collection('users').doc(userId);
+
+  return user.onSnapshot(snapshot => {
+    callback(snapshot);
+  });
+};
+
 export const onUsersChange = (sessionId, callback) => {
   const db = firebase.firestore();
   const session = db.collection('sessions').doc(sessionId); 
@@ -176,6 +188,14 @@ export const onUsersChange = (sessionId, callback) => {
   return users.onSnapshot(snapshot => {
     callback(snapshot);
   });
+};
+
+export const updateUserParams = (sessionId, userId, params) => {
+  const db = firebase.firestore();
+  const session = db.collection('sessions').doc(sessionId); 
+  const user = session.collection('users').doc(userId);
+
+  return user.update(params);
 };
 
 export const getSessionUsers = sessionId => {

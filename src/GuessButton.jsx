@@ -1,20 +1,20 @@
 import React, { useContext, useState } from 'react';
-import { MapsContext, AppContext, ThemeContext } from './AppContext';
+import { MapsContext, AppContext } from './AppContext';
 
 import { distance } from './util/math'; 
-import { getNextLocation, getCountryDetails } from './util/db';
+import { getNextLocation, getCountryDetails, updateUserParams } from './util/db';
 
 import Spinner from './Spinner';
+import { calcScore } from './util/constants';
 
 const GuessButton = props => {
-  const [hoverState, setHover] = useState(false);
-  const [isMouseDown, setMouseDown] = useState(false);
   const [isWaiting, setWaiting] = useState(false);
   const [guess, setGuess] = useState(null);
 
   const [mapsContext, mapsDispatch] = useContext(MapsContext);
   const [appContext, appDispatch] = useContext(AppContext);
   
+  const { sessionParams, userParams, guessDistances } = appContext;
   const { guessMarker, locationMarker } = mapsContext;
 
   const guessMarkerPosition = guessMarker && guessMarker.getPosition();
@@ -51,7 +51,7 @@ const GuessButton = props => {
   }
 
   const onGuess = event => {
-    if(locationMarkerPositionJSON && guess) {
+    if(sessionParams.sessionId && locationMarkerPositionJSON && guess) {
       // guess
       if (currentMode.id === 1) {
         const d = distance(locationMarkerPositionJSON, guess);
@@ -66,6 +66,10 @@ const GuessButton = props => {
           appDispatch({ type: 'setCountryDetails', value: res });
         });
 
+        updateUserParams(sessionParams.sessionId, userParams.id, {
+          score: userParams.score + calcScore(d)
+        });
+
         // next location
       } else if (currentMode.id === 2) {
         setWaiting(true);
@@ -77,8 +81,9 @@ const GuessButton = props => {
 
           if(appContext.isMapExpanded) appDispatch({ type: 'setMapExpanded', value: false });
 
-          const currentRound = appContext.currentRound;
-          appDispatch({ type: 'setCurrentRound', value: currentRound + 1 });
+          updateUserParams(sessionParams.sessionId, userParams.id, { 
+            locationsVisited: userParams.locationsVisited + 1,
+          });
 
           setGuess(null);
           setWaiting(false);
@@ -90,14 +95,7 @@ const GuessButton = props => {
 
   return(
     <a className={`button play full-width ${currentMode.className}`}
-        onClick={onGuess}
-        onMouseEnter={event => setHover(true)}
-        onMouseLeave={event => {
-          setHover(false);
-          setMouseDown(false);
-        }}
-        onMouseDown={event => setMouseDown(true)}
-        onMouseUp={event => setMouseDown(false)}>
+        onClick={onGuess}>
       {isWaiting ? <Spinner /> : 
         <h3>{currentMode.text}</h3>
       }

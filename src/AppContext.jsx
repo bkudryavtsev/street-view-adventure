@@ -7,10 +7,10 @@ export const ThemeContext = createContext();
 const initialAppState = {
   guessDistances: [],
   locations: [],
-  currentRound: 0,
   isMapExpanded: false,
   appView: 'guess',
   sessionParams: {},
+  userParams: {},
   update: 0
 };
 
@@ -23,8 +23,6 @@ const appReducer = (state, action) => {
       return initialAppState;
     case 'setLocation':
       return { ...state, location: action.value };
-    case 'setCurrentRound':
-      return { ...state, currentRound: action.value };
     case 'setMapExpanded':
       return { ...state, isMapExpanded: action.value };
     case 'setCountryDetails':
@@ -33,6 +31,8 @@ const appReducer = (state, action) => {
       return { ...state, appView: action.value };
     case 'setSessionParams':
       return { ...state, sessionParams: { ...state.sessionParams, ...action.value } };
+    case 'setUserParams':
+      return { ...state, userParams: { ...state.userParams, ...action.value }};
     case 'setCountdownComplete':
       return { ...state, countdownComplete: action.value };
     case 'update':
