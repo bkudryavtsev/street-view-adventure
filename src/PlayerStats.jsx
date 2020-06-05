@@ -31,8 +31,6 @@ const PlayerStats = props => {
     }
   }, [gameStartTime]);
 
-  console.log(userParams.score);
-
   return(
     <div className="info-bar-stats">
       <div>

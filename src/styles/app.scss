@@ -55,12 +55,15 @@ $default-map-height: 20%;
 .info-bar-stats {
   width: 100%;
   height: 100%;
+  overflow-y: hidden;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 
   > div {
     height: 100%;
+    width: 70px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -68,6 +71,23 @@ $default-map-height: 20%;
 
     p {
       color: #999;
+    }
+
+    &.user {
+      padding-top: 6px;
+
+      p {
+        color: #333;
+        background: white;
+        line-height: 1;
+        min-width: 64px;
+        border-radius: 2px;
+        transform: translateY(-6px);
+      }
+
+      img {
+        height: 40px;
+      }
     }
   }
 }
