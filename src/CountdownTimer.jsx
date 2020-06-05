@@ -44,7 +44,7 @@ const CountdownTimer = props => {
   const secondsLeft = parseInt(displayMinutes) * 60 + parseInt(displaySeconds);
 
   return(
-    <div style={secondsLeft < 10 ? { color: 'red'} : {}}>
+    <div className={secondsLeft < 10 ? 'blink' : ''} style={secondsLeft < 30 ? { color: 'red'} : {}}>
       {displayMinutes} : {displaySeconds}
     </div>
   );

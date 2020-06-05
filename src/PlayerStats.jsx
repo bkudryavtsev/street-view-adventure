@@ -31,13 +31,25 @@ const PlayerStats = props => {
     }
   }, [gameStartTime]);
 
+  console.log(userParams.score);
+
   return(
     <div className="info-bar-stats">
-      <div>{userParams.score}</div>
-      <div>{userParams.locationsVisited}</div>
-      <CountdownTimer 
-        until={timerEnd}
-        onComplete={onCountdownComplete} />
+      <div>
+        {userParams.score || userParams.score === 0 ?
+            userParams.score : '--'}
+        <p>Score</p>
+      </div>
+      <div>
+        {userParams.locationsVisited || '--'}
+        <p>Visited</p>
+      </div>
+      <div>
+        <CountdownTimer 
+          until={timerEnd}
+          onComplete={onCountdownComplete} />
+        <p>Time left</p>
+      </div>
     </div>
   );
 };
