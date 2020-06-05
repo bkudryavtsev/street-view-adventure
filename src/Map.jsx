@@ -43,6 +43,7 @@ const Map = props => {
     switch(appView) {
       case 'guess':
         setCurrentView('guess');
+        appDispatch({ type: 'setCountryDetails', value: null });
         break;
 
       case 'guessResult':

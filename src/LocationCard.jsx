@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import Spinner from './Spinner';
+
 const LocationCard = props => {
   const { flagUrl, city, country, guessDistance } = props;
   let displayGuessDistance;
@@ -16,7 +18,7 @@ const LocationCard = props => {
     <div className="card">
       <div className="card-content">
         <div className="card-image">
-          <img src={flagUrl} />
+          {flagUrl ? <img src={flagUrl} /> : <Spinner />}
         </div>
         <span>
           <h2>{city}</h2>
