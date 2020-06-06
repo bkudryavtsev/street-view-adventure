@@ -62,7 +62,7 @@ $default-map-height: 20%;
 
   > div {
     height: 100%;
-    width: 70px;
+    width: 100px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -74,15 +74,15 @@ $default-map-height: 20%;
     }
 
     &.user {
-      padding-top: 6px;
-
       p {
         color: #333;
-        background: white;
+        background: #eee;
+        padding: 2px 10px;
         line-height: 1;
-        min-width: 64px;
-        border-radius: 2px;
-        transform: translateY(-6px);
+        min-width: 12px;
+        border-radius: 4px;
+        transform: translate(12px, -8px);
+        font-size: 0.8rem;
       }
 
       img {
