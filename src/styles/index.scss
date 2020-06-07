@@ -354,3 +354,21 @@ ul.user-list {
   }
 }
 
+.results {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  ul.user-list div {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+  }
+
+  ul.user-list li.legend {
+    height: 40px;
+  }
+
+  width: 85%;
+}
