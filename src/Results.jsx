@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { getSessionUsers } from './util/db';
 
@@ -42,9 +41,9 @@ const Results = props => {
         })}
       </ul>
       <div className="centered-button-container">
-        <Link to="/start" className="button play">
+        <a href="/start" className="button play">
           <h3>Play again</h3>
-        </Link>
+        </a>
       </div>
     </div>
   );
