@@ -103,7 +103,7 @@ const Map = props => {
         {countryDetails && showLocationCard && 
           <div className="location-card-wrapper">
             <LocationCard 
-              flagUrl={countryDetails.flag}
+              flagUrl={`https://flagcdn.com/${countryDetails.code.toLowerCase()}.svg`}
               city={location.city}
               country={countryDetails.name}
               guessDistance={guessDistances[guessDistances.length - 1]}
